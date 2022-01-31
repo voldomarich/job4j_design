@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="job4j_design" target="17.0.2" />
+      <module name="job4j_design" target="16" />
     </bytecodeTargetLevel>
   </component>
 </project>

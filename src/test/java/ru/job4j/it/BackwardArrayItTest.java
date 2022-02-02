@@ -8,7 +8,6 @@ import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.is;
 
 public class BackwardArrayItTest {
-
     @Test
     public void whenMultiCallhasNextThenTrue() {
         BackwardArrayIt it = new BackwardArrayIt(

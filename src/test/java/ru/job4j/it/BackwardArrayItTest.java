@@ -21,11 +21,11 @@ public class BackwardArrayItTest {
     @Test
     public void whenReadSequence() {
         BackwardArrayIt it = new BackwardArrayIt(
-                new int[] {1, 7, 8}
+                new int[] {8, 7, 1}
         );
-        assertThat(it.next(), is(8));
-        assertThat(it.next(), is(7));
         assertThat(it.next(), is(1));
+        assertThat(it.next(), is(7));
+        assertThat(it.next(), is(8));
     }
 
     @Test(expected = NoSuchElementException.class)

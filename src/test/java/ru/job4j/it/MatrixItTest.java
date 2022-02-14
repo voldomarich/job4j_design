@@ -8,6 +8,7 @@ import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.is;
 
 public class MatrixItTest {
+
     @Test
     public void when4El() {
         int[][] in = {

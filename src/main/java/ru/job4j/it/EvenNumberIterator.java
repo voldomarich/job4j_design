@@ -17,11 +17,10 @@ public class EvenNumberIterator implements Iterator<Integer> {
         for (int i = index; i < data.length; i++) {
             if (data[i] % 2 == 0) {
                 index = i + 1;
-                return true;
+                break;
             }
-            return false;
         }
-        return false;
+        return data[index] % 2 == 0;
     }
 
     @Override

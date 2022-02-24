@@ -13,7 +13,12 @@ public class FlatMap<T> implements Iterator<T> {
 
     @Override
     public boolean hasNext() {
-        return cursor != null;
+        while (data.hasNext()) {
+            if (data.hasNext() && !cursor.hasNext()) {
+                cursor = data.next();
+            }
+        }
+            return cursor.hasNext();
     }
 
     @Override
@@ -21,10 +26,8 @@ public class FlatMap<T> implements Iterator<T> {
         if (!hasNext()) {
             throw new NoSuchElementException();
         }
-        cursor = this.data.hasNext() ? this.data.next() : null;
-        return cursor.stream()
-                .forEach(col -> col.stream()
-                        .forEach(i -> System.out.println(i)));
+        return cursor.next();
+
     }
 
     public static void main(String[] args) {

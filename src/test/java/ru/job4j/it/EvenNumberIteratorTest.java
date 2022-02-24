@@ -56,3 +56,4 @@ public class EvenNumberIteratorTest {
         assertThat(it.hasNext(), is(false));
     }
 }
+

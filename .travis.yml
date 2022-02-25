@@ -1,6 +1,6 @@
 language: java
 jdk:
-  - openjdk14
+  - openjdk17
 sudo: false
 
 after_success:

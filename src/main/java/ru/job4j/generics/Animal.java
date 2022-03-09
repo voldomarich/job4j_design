@@ -11,10 +11,7 @@ public class Animal {
 
     private Date birthday;
 
-    public Animal(String name, int age, Date birthday) {
-        this.name = name;
-        this.age = age;
-        this.birthday = birthday;
+    public Animal() {
     }
 
     public String getName() {

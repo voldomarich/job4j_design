@@ -13,39 +13,17 @@ public class MemStore<T extends Base> implements Store<T> {
     }
 
     @Override
-    private int indexOf(int id, T model) {
-        int result = -1;
-        for (int i = 0; i < storage.size(); i++) {
-            if (model.getId() = id) {
-                result = i;
-                break;
-            }
-        }
-        return result;
+    public boolean replace(String id, T model) {
+        return storage.replace(id, model) == model;
     }
 
     @Override
-    public boolean replace(String id, T model) {
-        int index = indexOf(id);
-        boolean result = index != -1;
-        if (result) {
-            storage.entrySet(id);
-            storage.put(model);
-        }
-        return result;
+    public boolean delete(String id) {
+        return storage.remove(id) == storage.get(id);
+    }
 
-        @Override
-        public boolean delete (String id){
-            if (storage.remove(id) == id) {
-                return true;
-            }
-            return false;
-        }
-
-        @Override
-        public T findById (String id, T model){
-            int index = indexOf(id);
-            return index != -1 ? model : null;
-        }
+    @Override
+    public T findById(String id, T model) {
+        return storage.get(id) == model ? model : null;
     }
 }

@@ -34,17 +34,18 @@ public class MemStore<T extends Base> implements Store<T> {
         }
         return result;
 
-    @Override
-    public boolean delete(String id) {
-        if (storage.remove(id) == id) {
-            return true;
+        @Override
+        public boolean delete (String id){
+            if (storage.remove(id) == id) {
+                return true;
+            }
+            return false;
         }
-        return false;
-    }
 
-    @Override
-    public T findById(String id, T model) {
-        int index = indexOf(id);
-        return index != -1 ? model : null;
+        @Override
+        public T findById (String id, T model){
+            int index = indexOf(id);
+            return index != -1 ? model : null;
+        }
     }
 }

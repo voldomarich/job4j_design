@@ -1,18 +1,27 @@
 package ru.job4j.collection;
 
+import org.w3c.dom.*;
+
 import java.util.*;
 
 public class SimpleLinkedList<E> implements List<E> {
 
-    private E[] container;
+    private Node<E> firstNode;
+    private Node<E> lastNode;
+    private int size = 0;
 
-    private int size;
-
-    private int modCount;
+    public SimpleLinkedList() {
+        firstNode = new Node<E>(null, firstNode, null);
+        lastNode = new Node<E>(null, null, lastNode);
+    }
 
     @Override
     public void add(E value) {
-        container = Arrays.copyOf(container, container.length);
+        Node<E> prev = firstNode;
+        prev.setNodeValue(value);
+        firstNode = new Node<E>(null, prev, null);
+        prev.setPrefix(lastNode);
+        size++;
     }
 
     @Override

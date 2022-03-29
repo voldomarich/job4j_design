@@ -16,14 +16,25 @@ public class SimpleArrayList<T> implements List<T> {
 
     @Override
     public void add(T value) {
+        if (modCount < size) {
+            container.push(value);
+            modCount++;
+        }
+        container.expand(value);
+        container.push(value);
+    }
+
+    @Override
+    public void expand(T value) {
         container = Arrays.copyOf(container, container.length * 2);
     }
 
     @Override
     public T set(int index, T newValue) {
         Objects.checkIndex(index, container.length);
+        T oldValue = container[index];
         container[index] = newValue;
-        return container[index];
+        return oldValue;
     }
 
     @Override

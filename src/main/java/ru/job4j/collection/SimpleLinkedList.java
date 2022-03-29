@@ -4,42 +4,49 @@ import org.w3c.dom.*;
 
 import java.util.*;
 
-public class SimpleLinkedList<E> implements List<E> {
+public class SimpleLinkedList<E> implements List<E>, Iterable<E> {
 
-    private Node<E> firstNode;
-    private Node<E> lastNode;
+    E item;
+    Node<E> prev;
+    Node<E> next;
+
+    private int modCount;
+
+    private Node<E> node;
     private int size = 0;
 
     public SimpleLinkedList() {
-        firstNode = new Node<E>(null, firstNode, null);
-        lastNode = new Node<E>(null, null, lastNode);
+        node = new Node<E>(null, prev, next);
     }
 
     @Override
     public void add(E value) {
-        Node<E> prev = firstNode;
-        prev.setNodeValue(value);
-        firstNode = new Node<E>(null, prev, null);
-        prev.setPrefix(lastNode);
+        Node<E> a = node;
+        a.setNodeValue(value);
+        node = new Node<E>(null, prev, next);
+        a.setPrefix(next);
         size++;
     }
 
     @Override
     public E get(int index) {
-        Objects.checkIndex(index, container.length);
-        return container[index];
+        Node<E> target = node.getNextSibling();
+        for (int i = 0; i < index; i++) {
+            target = get(target);
+        }
+        return target.getNextSibling();
     }
 
     @Override
     public Iterator<E> iterator() {
 
-         int index;
+         int count = 0;
 
          final int expectedModCount = modCount;
 
         @Override
         public boolean hasNext() {
-            return index < size - 1;
+            return count < size;
         }
 
         @Override
@@ -50,7 +57,7 @@ public class SimpleLinkedList<E> implements List<E> {
             if (!hasNext()) {
                 throw new NoSuchElementException();
             }
-            return container[index++];
+            return get(count++);
 
         }
     };

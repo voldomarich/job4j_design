@@ -9,8 +9,6 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.stream.IntStream;
 
-import static org.junit.Assert.*;
-
 public class SimpleArrayListTest {
 
     List<Integer> list;

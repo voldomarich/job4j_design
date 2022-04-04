@@ -1,64 +1,65 @@
 package ru.job4j.collection;
 
-import org.w3c.dom.*;
-
 import java.util.*;
 
-public class SimpleLinkedList<E> implements List<E>, Iterable<E> {
+public class SimpleLinkedList<E> implements List<E> {
 
-    E item;
-    Node<E> prev;
-    Node<E> next;
+    private Node<E> first;
+    private Node<E> last;
 
     private int modCount;
-
-    private Node<E> node;
-    private int size = 0;
-
-    public SimpleLinkedList() {
-        node = new Node<E>(null, prev, next);
-    }
+    private int size;
 
     @Override
     public void add(E value) {
-        Node<E> a = node;
-        a.setNodeValue(value);
-        node = new Node<E>(null, prev, next);
-        a.setPrefix(next);
+        final Node<E> l = last;
+        final Node<E> newNode = new Node<>(value, null);
+        last = newNode;
+
+        if (l == null) {
+            first = newNode;
+        } else {
+            l.next = newNode;
+        }
         size++;
+        modCount++;
     }
 
     @Override
     public E get(int index) {
-        Node<E> target = node.getNextSibling();
+        Objects.checkIndex(index, size);
+        Node<E> tmp = first;
         for (int i = 0; i < index; i++) {
-            target = get(target);
+            tmp = tmp.next;
         }
-        return target.getNextSibling();
+        return tmp.item;
     }
 
     @Override
     public Iterator<E> iterator() {
 
-         int count = 0;
+        return new Iterator<>() {
 
-         final int expectedModCount = modCount;
+            int count = 0;
 
-        @Override
-        public boolean hasNext() {
-            return count < size;
-        }
+            final int expectedModCount = modCount;
 
-        @Override
-        public E next() {
-            if (expectedModCount != modCount) {
-                throw new ConcurrentModificationException();
+            @Override
+            public boolean hasNext() {
+                if (expectedModCount != modCount) {
+                    throw new ConcurrentModificationException();
+                }
+                return count < size;
             }
-            if (!hasNext()) {
-                throw new NoSuchElementException();
-            }
-            return get(count++);
 
-        }
-    };
+            @Override
+            public E next() {
+                if (!hasNext()) {
+                    throw new NoSuchElementException();
+                }
+                return get(count++);
+
+            }
+        };
+    }
 }

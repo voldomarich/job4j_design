@@ -22,6 +22,15 @@ public class SimpleArrayListTest {
     }
 
     @Test
+    public void whenContainerIsEmpty() {
+        list.remove(0);
+        list.remove(1);
+        list.remove(2);
+        list.add(5);
+        Assert.assertEquals(1, list.size());
+    }
+
+    @Test
     public void whenAddThenSizeIncrease() {
         Assert.assertEquals(3, list.size());
     }

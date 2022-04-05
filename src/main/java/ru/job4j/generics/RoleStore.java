@@ -1,8 +1,5 @@
 package ru.job4j.generics;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class RoleStore implements Store<Role> {
 
     private final Store<Role> store = new MemStore<>();

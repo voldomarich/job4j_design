@@ -23,10 +23,10 @@ public class SimpleArrayListTest {
 
     @Test
     public void whenContainerIsEmpty() {
-        list.remove(0);
-        list.remove(1);
         list.remove(2);
-        list.add(5);
+        list.remove(1);
+        list.remove(0);
+        list.add(1);
         Assert.assertEquals(1, list.size());
     }
 

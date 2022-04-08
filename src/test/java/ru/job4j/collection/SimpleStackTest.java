@@ -2,8 +2,6 @@ package ru.job4j.collection;
 
 import org.junit.Test;
 
-import java.util.Iterator;
-
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 
@@ -15,13 +13,7 @@ public class SimpleStackTest {
         stack.push(10);
         stack.push(80);
         stack.push(1000);
-        stack.push(null);
-        stack.push(null);
-        Iterator<Integer> it = stack.iterator();
-        assertNull(it.next());
-        assertNull(it.next());
-        assertThat(it.next(), is(1000));
-        assertThat(it.next(), is(80));
+        assertThat(stack.pop(), is(1000));
     }
 
     @Test

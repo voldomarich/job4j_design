@@ -9,13 +9,13 @@ import static org.junit.Assert.*;
 
 public class SimpleStackTest {
 
-    @Test
+    @Test(expected = NoSuchElementException.class)
     public void whenPush() {
         SimpleStack<Integer> stack = new SimpleStack<>();
         stack.push(10);
         stack.push(80);
-        stack.push(1000);
-        assertThat(stack.pop(), is(1000));
+        stack.push(null);
+        stack.pop();
     }
 
     @Test

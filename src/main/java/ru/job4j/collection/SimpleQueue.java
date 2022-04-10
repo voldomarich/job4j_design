@@ -5,12 +5,15 @@ public class SimpleQueue<T> {
     private final SimpleStack<T> in = new SimpleStack<>();
     private final SimpleStack<T> out = new SimpleStack<>();
 
+    int countIn = 0;
+    int countOut = 0;
+
     public T poll() {
-        while (in.pop() != null) {
-            out.push(in.pop());
+        out.push(in.pop());
+        countIn--;
+        countOut++;
+        return countIn != 0 ? out.pop() : null;
         }
-        return out.pop();
-    }
 
     public void push(T value) {
         in.push(value);

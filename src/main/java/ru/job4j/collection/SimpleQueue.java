@@ -9,13 +9,19 @@ public class SimpleQueue<T> {
     int countOut = 0;
 
     public T poll() {
-        out.push(in.pop());
-        countIn--;
-        countOut++;
-        return countIn == 0 ? out.pop() : null;
-        }
+        if (countOut == 0) {
+            while (countIn != 0) {
+                out.push(in.pop());
+                countIn--;
+                countOut++;
+            }
+                return out.pop();
+            }
+        return null;
+    }
 
     public void push(T value) {
         in.push(value);
+        countIn++;
     }
 }

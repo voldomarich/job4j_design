@@ -12,7 +12,7 @@ public class SimpleQueue<T> {
         out.push(in.pop());
         countIn--;
         countOut++;
-        return countIn != 0 ? out.pop() : null;
+        return countIn == 0 ? out.pop() : null;
         }
 
     public void push(T value) {

@@ -5,8 +5,8 @@ public class SimpleQueue<T> {
     private final SimpleStack<T> in = new SimpleStack<>();
     private final SimpleStack<T> out = new SimpleStack<>();
 
-    int countIn = 0;
-    int countOut = 0;
+    private int countIn;
+    private int countOut;
 
     public T poll() {
         if (countOut == 0) {
@@ -15,9 +15,9 @@ public class SimpleQueue<T> {
                 countIn--;
                 countOut++;
             }
-                return out.pop();
-            }
-        return null;
+        }
+        countOut--;
+        return out.pop();
     }
 
     public void push(T value) {

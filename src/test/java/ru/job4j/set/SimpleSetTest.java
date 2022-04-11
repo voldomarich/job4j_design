@@ -22,7 +22,7 @@ public class SimpleSetTest {
         Set<Integer> set = new SimpleSet<>();
         assertTrue(set.add(null));
         assertTrue(set.contains(null));
-        assertFalse(set.add(null));
+        assertTrue(set.add(4));
     }
 
     @Test
@@ -39,9 +39,9 @@ public class SimpleSetTest {
     @Test
     public void whenUseIterator() {
         Set<Integer> set = new SimpleSet<>();
-        assertTrue(set.add(0));
+        set.add(null);
+        set.add(0);
         assertTrue(set.add(1));
-        assertFalse(set.add(null));
         assertThat(set.iterator(), is(0));
     }
 

@@ -32,9 +32,8 @@ public class SimpleTree<E> implements Tree<E> {
         data.offer(this.root);
         while (!data.isEmpty()) {
             Node<E> root = data.poll();
-            if (root.children.size() < 3) {
-                    rsl = true;
-                }
+            Predicate<Node<E>> pred = f -> root.children.size() < 3;
+            rsl = findByPredicate(pred).isPresent();
         }
         return rsl;
     }
@@ -61,10 +60,8 @@ public class SimpleTree<E> implements Tree<E> {
         data.offer(this.root);
         while (!data.isEmpty()) {
             Node<E> el = data.poll();
-            if (el.value.equals(value)) {
-                rsl = Optional.of(el);
-                break;
-            }
+            Predicate<Node<E>> pred = f -> el.value.equals(value);
+            rsl = findByPredicate(pred);
             data.addAll(el.children);
         }
         return rsl;

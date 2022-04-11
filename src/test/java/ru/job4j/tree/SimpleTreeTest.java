@@ -2,8 +2,6 @@ package ru.job4j.tree;
 
 import org.junit.Test;
 
-import java.util.Optional;
-
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.is;
 
@@ -28,21 +26,6 @@ public class SimpleTreeTest {
         tree.add(2, 5);
         tree.add(2, 6);
         assertTrue(tree.isBinary());
-    }
-
-    @Test
-    public void whenUsePredicate() {
-        Tree<Integer> tree = new SimpleTree<>(1);
-        tree.add(1, 2);
-        tree.add(1, 3);
-        tree.add(4, 5);
-        tree.add(5, 6);
-        Tree<Integer> expected = new SimpleTree<>(1);
-        tree.add(1, 2);
-        tree.add(1, 3);
-        Predicate<Node<E>> pred = f -> f.contains(1);
-        tree.findByPredicate(pred);
-        assertThat(tree, is(expected));
     }
 
     @Test

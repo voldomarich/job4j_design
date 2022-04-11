@@ -36,11 +36,10 @@ public class SimpleTree<E> implements Tree<E> {
         Queue<Node<E>> data = new LinkedList<>();
         data.offer(this.root);
         while (!data.isEmpty()) {
-            Node<E> root = data.poll();
-            for (Node<E> kid : root.children) {
-                if (condition.test(kid)) {
-                    data.add(kid);
-                }
+            Node<E> kid = data.poll();
+            if (condition.test(kid)) {
+                rsl = Optional.of(kid);
+                break;
             }
         }
         return rsl;

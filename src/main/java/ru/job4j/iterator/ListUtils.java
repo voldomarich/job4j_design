@@ -23,35 +23,31 @@ public class ListUtils {
         ListIterator<T> iterator = list.listIterator();
         while (iterator.hasNext()) {
             for (T l : list) {
-                if (l.equals(filter)) {
-                    l = iterator.next();
+                if (filter.test(iterator.next())) {
                     iterator.remove();
                 }
             }
         }
-        iterator.next();
     }
 
     public static <T> void replaceIf(List<T> list, Predicate<T> filter, T value) {
         ListIterator<T> iterator = list.listIterator();
         while (iterator.hasNext()) {
             for (T l : list) {
-                if (l.equals(filter)) {
-                    l = iterator.next();
+                if (filter.test(iterator.next())) {
                     iterator.set(value);
                 }
             }
         }
-        iterator.next();
     }
 
     public static <T> void removeAll(List<T> list, List<T> elements) {
         ListIterator<T> iterator = list.listIterator();
         while (iterator.hasNext()) {
-            if (elements.contains(iterator)) {
+            if (elements.contains(iterator.next())) {
                 list.iterator().remove();
             }
         }
         iterator.next();
-        }
+    }
     }

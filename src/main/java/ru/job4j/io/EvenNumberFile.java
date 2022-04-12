@@ -12,7 +12,8 @@ public class EvenNumberFile {
             }
             String[] lines = text.toString().split(System.lineSeparator());
             for (String line : lines) {
-                if (number % 2 == 0) {
+                int l = Integer.parseInt(line);
+                if (l % 2 == 0) {
                     System.out.println(line + "чётное");
                 } else {
                     System.out.println(line + "нечётное");

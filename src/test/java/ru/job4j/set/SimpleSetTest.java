@@ -31,7 +31,7 @@ public class SimpleSetTest {
         assertTrue(set.add(0));
         assertTrue(set.contains(0));
         assertTrue(set.add(1));
-        assertFalse(set.add(null));
+        assertTrue(set.add(null));
         assertFalse(set.contains(2));
         assertFalse(set.add(null));
     }
@@ -42,7 +42,7 @@ public class SimpleSetTest {
         set.add(null);
         set.add(0);
         assertTrue(set.add(1));
-        assertThat(set.iterator(), is(0));
+        assertThat(set.iterator(), is(null));
     }
 
     @Test(expected = NoSuchElementException.class)

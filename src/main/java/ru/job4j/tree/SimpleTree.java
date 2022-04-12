@@ -41,13 +41,14 @@ public class SimpleTree<E> implements Tree<E> {
                 rsl = Optional.of(kid);
                 break;
             }
+            data.addAll(kid.children);
         }
         return rsl;
     }
 
     @Override
     public Optional<Node<E>> findBy(E value) {
-        Predicate<Node<E>> pred = f -> f.value.equals(value);
+        Predicate<Node<E>> pred = f -> Objects.equals(f.value, value);
         return findByPredicate(pred);
     }
 }

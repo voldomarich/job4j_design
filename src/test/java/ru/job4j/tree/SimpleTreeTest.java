@@ -33,7 +33,7 @@ public class SimpleTreeTest {
         Tree<Integer> tree = new SimpleTree<>(1);
         tree.add(1, 2);
         tree.add(1, null);
-        assertTrue(tree.findBy(null).isEmpty());
+        assertTrue(tree.findBy(null).isPresent());
         assertFalse(tree.add(2, 0));
         assertTrue(tree.add(1, 0));
     }
@@ -48,7 +48,7 @@ public class SimpleTreeTest {
         tree.add(5, 6);
         assertThat(
                 tree.findBy(6).isPresent(),
-                is(false)
+                is(true)
         );
     }
 
@@ -58,7 +58,7 @@ public class SimpleTreeTest {
         tree.add(1, 2);
         assertThat(
                 tree.findBy(2).isPresent(),
-                is(false)
+                is(true)
         );
     }
 

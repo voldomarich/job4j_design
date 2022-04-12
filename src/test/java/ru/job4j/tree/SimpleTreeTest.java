@@ -34,8 +34,8 @@ public class SimpleTreeTest {
         tree.add(1, 2);
         tree.add(1, null);
         assertTrue(tree.findBy(null).isPresent());
-        assertFalse(tree.add(2, 0));
-        assertTrue(tree.add(1, 0));
+        assertTrue(tree.add(2, 0));
+        assertFalse(tree.add(1, 0));
     }
 
     @Test
@@ -48,6 +48,10 @@ public class SimpleTreeTest {
         tree.add(5, 6);
         assertThat(
                 tree.findBy(6).isPresent(),
+                is(true)
+        );
+        assertThat(
+                tree.findBy(1).isPresent(),
                 is(true)
         );
     }
@@ -70,6 +74,7 @@ public class SimpleTreeTest {
         tree.add(1, 4);
         tree.add(4, 5);
         tree.add(5, 6);
-        assertFalse(tree.add(2, 6));
+        assertTrue(tree.add(2, 8));
+        assertFalse(tree.add(2, 4));
     }
 }

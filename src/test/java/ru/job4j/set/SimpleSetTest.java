@@ -5,7 +5,6 @@ import org.junit.Test;
 import java.util.NoSuchElementException;
 
 import static org.junit.Assert.*;
-import static org.hamcrest.Matchers.is;
 
 public class SimpleSetTest {
 
@@ -42,12 +41,12 @@ public class SimpleSetTest {
         set.add(null);
         set.add(0);
         assertTrue(set.add(1));
-        assertThat(set.iterator(), is(null));
+        assertNull(set.iterator().next());
     }
 
     @Test(expected = NoSuchElementException.class)
     public void whenUseAnotherIterator() {
         Set<Integer> set = new SimpleSet<>();
-        set.iterator();
+        set.iterator().next();
     }
 }

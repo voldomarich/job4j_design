@@ -5,13 +5,13 @@ import java.util.List;
 
 public class LogFilter {
     public static List<String> filter(String file) {
-        try (BufferedReader in = new BufferedReader(new FileReader("log.txt"))) {
-            in.lines().filter("404"::equals).forEach(System.out::println);
+        try (BufferedReader in = new BufferedReader(new FileReader(file))) {
+            in.lines().filter("404"::contains).forEach(System.out::println);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
-    }
+        return in;
+        }
 
     public static void save(List<String> log, String file) {
         try (PrintWriter out = new PrintWriter(

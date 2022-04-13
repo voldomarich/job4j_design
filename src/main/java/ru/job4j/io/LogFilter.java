@@ -31,7 +31,6 @@ public class LogFilter {
 
     public static void main(String[] args) {
         List<String> log = filter("log.txt");
-        save(log, "log.txt");
-        System.out.println(log);
+        save(log, "logFiltred.txt");
     }
 }

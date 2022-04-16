@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 public class Config {
 
     private final String path;
-    private final Map<String, String> values = new HashMap<String, String>();
+    private Map<String, String> values = new HashMap<String, String>();
 
     public Config(final String path) {
         this.path = path;
@@ -15,7 +15,8 @@ public class Config {
 
     public void load() {
         try (BufferedReader in = new BufferedReader(new FileReader(this.path))) {
-            values = in.lines().collect(Collectors.toMap(f -> f.this.path, f -> f.));
+            values = in.lines()
+                    .collect(Collectors.toMap(f -> f.split("=")[0], f -> f.split("=")[1]));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -40,6 +41,8 @@ public class Config {
     }
 
     public static void main(String[] args) {
-        System.out.println(new Config("app.properties"));
+        Config config = new Config("app.properties");
+        config.load();
+        config.values.forEach((key, value) -> System.out.println(key + " " + value));
     }
 }

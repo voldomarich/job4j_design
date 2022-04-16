@@ -8,9 +8,9 @@ import static org.hamcrest.Matchers.is;
 
 public class ConfigTest {
 
-    @Test
+    @Test(expected = UnsupportedOperationException.class)
     public void whenPairWithoutComment() {
-        String path = "./data/pair_without_comment.properties";
+        String path = "data/pair_without_comment.properties";
         Config config = new Config(path);
         config.load();
         assertThat(config.value("name"), is(Matchers.nullValue()));
@@ -19,7 +19,7 @@ public class ConfigTest {
 
     @Test
     public void whenPairWithComment() {
-        String path = ".app.properties";
+        String path = "app.properties";
         Config config = new Config(path);
         config.load();
         assertThat(
@@ -30,17 +30,16 @@ public class ConfigTest {
                 config.value("hibernate.connection.driver_class"),
                 is("org.postgresql.Driver")
         );
-
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void whenValueNotEquals() {
-        String path = ".app.properties";
+        String path = "app.properties";
         Config config = new Config(path);
         config.load();
-        assertFalse(
-                config.value("hibernate.connection.username"),
-                is ("postes")
+        assertThat(
+                config.value("hibernate.connection"),
+                is (Matchers.nullValue())
         );
     }
 }

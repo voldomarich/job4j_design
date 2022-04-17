@@ -39,7 +39,7 @@ public class ConfigTest {
         config.load();
         assertThat(
                 config.value("hibernate.connection"),
-                is (Matchers.nullValue())
+                is(Matchers.nullValue())
         );
     }
 }

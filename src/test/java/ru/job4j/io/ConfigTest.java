@@ -32,7 +32,7 @@ public class ConfigTest {
         );
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = UnsupportedOperationException.class)
     public void whenValueNotEquals() {
         String path = "app.properties";
         Config config = new Config(path);

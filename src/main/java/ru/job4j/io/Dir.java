@@ -14,7 +14,8 @@ public class Dir {
         }
         System.out.println("name  -  size:");
         for (File subfile : file.listFiles()) {
-            System.out.println(String.format(subfile.getName() + " - " + subfile.length()));
+            System.out.println(String.format("name : %s" + subfile.getName() + " - "
+                    + "size : %s" + subfile.length()));
         }
     }
 }

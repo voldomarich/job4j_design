@@ -2,9 +2,7 @@ package ru.job4j.io;
 
 import java.io.*;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
 public class Analizy {
@@ -17,8 +15,8 @@ public class Analizy {
                     .collect(Collectors.toMap((p) -> p.substring(0, 1), (p) -> p.substring(1, 2)))
                     .entrySet()
                     .stream()
-                    .filter((s, v) -> s.equals("400") || s.equals("500"))
-                    .collect(Collectors.toMap(f -> f.getKey(), f -> f.getValue()));
+                    .filter(s -> s.getKey().equals("400") || s.getKey().equals("500"))
+                    .collect(Collectors.toMap(f -> f.getValue(), f -> f.getValue()));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -29,7 +27,7 @@ public class Analizy {
                 new BufferedOutputStream(
                         new FileOutputStream(target)
                 ))) {
-            for (Map.Entry<String> line : values.entrySet()) {
+            for (var line : values.entrySet()) {
                 out.println(line);
             }
         } catch (Exception e) {

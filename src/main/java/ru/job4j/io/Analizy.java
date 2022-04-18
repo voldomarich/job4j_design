@@ -1,36 +1,27 @@
 package ru.job4j.io;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringJoiner;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Analizy {
 
     public void unavailable(String source, String target) {
         try (BufferedReader in = new BufferedReader(new FileReader(source))) {
-            a = in.lines()
+            Map<String, String> a = in.lines()
                     .filter(s -> s.startsWith("400") || s.startsWith("500"))
-                    .collect(Collectors.toList());
-            b = in.lines()
+                    .collect(Collectors.toMap(f -> f.split(" ")[0], f -> f.split(" ")[1]));
+            Map<String, String> b = in.lines()
                     .filter(s -> s.startsWith("200") || s.startsWith("300"))
-                    .collect(Collectors.toList());
-            target = a.split(" ")[0], b.split(" ")[1];
+                    .collect(Collectors.toMap(f -> f.split(" ")[0], f -> f.split(" ")[1]));
+            for (String key : a.keySet()) {
+                for (String k : b.keySet()) {
+                    target = a.get(key) + ";" + b.get(k);
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public String toString() {
-        StringJoiner out = new StringJoiner(System.lineSeparator());
-        try (BufferedReader read = new BufferedReader(new FileReader(target))) {
-            read.lines().forEach(out::add);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return out.toString();
     }
 
     public static void main(String[] args) {

@@ -25,9 +25,9 @@ public class LogFilter {
                 out.println(line);
             }
         } catch (Exception e) {
-                e.printStackTrace();
-            }
+            e.printStackTrace();
         }
+    }
 
     public static void main(String[] args) {
         List<String> log = filter("log.txt");

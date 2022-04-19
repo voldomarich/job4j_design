@@ -8,7 +8,6 @@ public class Analizy {
 
     public void unavailable(String source, String target) {
         try (BufferedReader in = new BufferedReader(new FileReader(source))) {
-            String x = null;
             Map<String, String> a = in.lines()
                     .filter(s -> s.startsWith("400") || s.startsWith("500"))
                     .collect(Collectors.toMap(f -> f.split(" ")[0], f -> f.split(" ")[1]));
@@ -17,10 +16,18 @@ public class Analizy {
                     .collect(Collectors.toMap(f -> f.split(" ")[0], f -> f.split(" ")[1]));
             for (String key : a.keySet()) {
                 for (String k : b.keySet()) {
-                    x = a.get(key) + ";" + b.get(k);
+                    target = a.get(key) + ";" + b.get(k);
                 }
             }
-            target = x;
+            try (PrintWriter out = new PrintWriter(
+                    new BufferedOutputStream(
+                            new FileOutputStream(target)
+                    ))) {
+                out.println(out);
+                System.out.println(out);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

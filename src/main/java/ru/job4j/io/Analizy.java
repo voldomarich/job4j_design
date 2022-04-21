@@ -1,7 +1,6 @@
 package ru.job4j.io;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,20 +13,18 @@ public class Analizy {
             StringBuilder rsl = new StringBuilder();
             for (String i : result) {
                 if (i.startsWith("400") || i.startsWith(("500"))) {
-                    rsl.append(i.split(" ")[1] + ";");
+                    rsl.append(i.split(" ")[1]).append(";");
+                    if (i.startsWith("200") || i.startsWith("300")) {
+                        rsl.append(i.split(" ")[1]);
+                    }
                 }
-                if (i.startsWith("200") || i.startsWith("300")) {
-                    rsl.append(i.split(" ")[1]);
-                }
-                break;
             }
-            target = rsl.toString();
             try (PrintWriter out = new PrintWriter(
                     new BufferedOutputStream(
                             new FileOutputStream(target)
                     ))) {
-                out.println(out);
-                System.out.println(out);
+                out.println(rsl);
+                System.out.println(rsl);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -36,7 +33,8 @@ public class Analizy {
         }
     }
 
-    public void main(String[] args) {
-        unavailable("server.log", "unavailable.csv");
+    public static void main(String[] args) {
+        Analizy analizy = new Analizy();
+        analizy.unavailable("server.log", "unavailable.csv");
     }
 }

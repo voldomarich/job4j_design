@@ -1,12 +1,8 @@
 package ru.job4j.map;
 
-import net.sf.saxon.ma.map.MapFunctionSet;
-
-import java.util.Arrays;
 import java.util.Iterator;
-import java.util.Objects;
 
-public class SimpleMap<K, V> implements Map<K, V>  {
+public class SimpleMap<K, V> implements Map<K, V> {
 
     private static final float LOAD_FACTOR = 0.75f;
 
@@ -23,15 +19,13 @@ public class SimpleMap<K, V> implements Map<K, V>  {
         if (count / capacity >= LOAD_FACTOR) {
             expand();
         }
-        Node<E> e;
-        if (hash == hash && ((k = key) == key || key.equals(k))) {
-            e.value = value;
-        }
-
+        bucketIndex = indexFor(hash);
+        Entry<K, V> e = table[bucketIndex];
+        table[bucketIndex] = new Entry<>(hash, key, value, e);
+        count++;
+        modCount++;
+        return table
     }
-
-}
-
 
     private int hash(int hashCode) {
         return hashCode % table.length;
@@ -42,25 +36,30 @@ public class SimpleMap<K, V> implements Map<K, V>  {
     }
 
     private void expand() {
-
-
+        table = table[capacity] * 2;
     }
 
     @Override
     public V get(K key) {
-    if (key.equals(table)) {
-        return table[key];
-        return null;
+        if (key.equals(table)) {
+            return table[bucketIndex].get(key);
+        }
     }
+
 
     @Override
     public boolean remove(K key) {
-
+        T oldValue = get();
+        System.arraycopy(container, index + 1, container, index, container.length - index - 1);
+        container[container.length - 1] = null;
+        size--;
+        modCount++;
+        return oldValue;
     }
 
     @Override
     public Iterator<K> iterator() {
-        return null;
+        return iterator();
     }
 
     private static class MapEntry<K, V> {
@@ -72,6 +71,5 @@ public class SimpleMap<K, V> implements Map<K, V>  {
             this.key = key;
             this.value = value;
         }
-
     }
 }

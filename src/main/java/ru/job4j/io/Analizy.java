@@ -12,11 +12,11 @@ public class Analizy {
                     .collect(Collectors.toList());
             StringBuilder rsl = new StringBuilder();
             for (String i : result) {
-                if (i.startsWith("400") || i.startsWith(("500"))) {
+                boolean memory = i.startsWith("400") || i.startsWith("500");
+                if (memory) {
                     rsl.append(i.split(" ")[1]).append(";");
-                    if (i.startsWith("200") || i.startsWith("300")) {
-                        rsl.append(i.split(" ")[1]);
-                    }
+                } else if (i.startsWith("200") || i.startsWith("300")) {
+                    rsl.append(i.split(" ")[1]);
                 }
             }
             try (PrintWriter out = new PrintWriter(

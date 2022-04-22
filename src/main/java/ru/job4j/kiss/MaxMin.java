@@ -17,11 +17,12 @@ public class MaxMin {
     }
 
     static <T> T min(List<T> value, Comparator<T> comparator) {
-        Predicate<T> predicate = comparator::equals;
-        return find(value, predicate);
+        T unit = value.get(0);
+        return find(value, f -> f.equals(unit));
     }
 
     static <T> T max(List<T> value, Comparator<T> comparator) {
-        return find(value, comparator::equals);
+        T unit = value.get(0);
+        return find(value, unit::equals);
     }
 }

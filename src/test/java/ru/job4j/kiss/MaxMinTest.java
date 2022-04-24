@@ -21,7 +21,7 @@ public class MaxMinTest {
     @Test
     public void whenMax() {
         List<Integer> value = List.of(0, 5, 10);
-        Comparator<Integer> comparator = Comparator.reverseOrder();
+        Comparator<Integer> comparator = Integer::compare;
         int result = MaxMin.max(value, comparator);
         int expected = 10;
         Assert.assertEquals(expected, result);
@@ -33,6 +33,8 @@ public class MaxMinTest {
         Comparator<Integer> comparator = Integer::compare;
         int result = MaxMin.min(value, comparator);
         int expected = 10;
+        Assert.assertEquals(expected, result);
+        result = MaxMin.max(value, comparator);
         Assert.assertEquals(expected, result);
     }
 

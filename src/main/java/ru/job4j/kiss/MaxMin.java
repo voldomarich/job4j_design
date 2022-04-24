@@ -2,14 +2,14 @@ package ru.job4j.kiss;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.function.Predicate;
+import java.util.function.BiPredicate;
 
 public class MaxMin {
 
-    static <T> T find(List<T> value, Predicate<T> predicate) {
+    static <T> T find(List<T> value, BiPredicate<T, T> predicate) {
         T unit = value.get(0);
         for (T t : value) {
-            if (predicate.test(t)) {
+            if (predicate.test(t, unit)) {
                 unit = t;
             }
         }
@@ -17,12 +17,10 @@ public class MaxMin {
     }
 
     static <T> T min(List<T> value, Comparator<T> comparator) {
-        T unit = value.get(0);
-        return find(value, f -> f.equals(unit));
+        return find(value, (a, b) -> comparator.compare(a, b) < 0);
     }
 
     static <T> T max(List<T> value, Comparator<T> comparator) {
-        T unit = value.get(0);
-        return find(value, unit::equals);
+        return find(value, (a, b) -> comparator.compare(a, b) > 0);
     }
 }

@@ -10,10 +10,8 @@ create table countries(
 insert into countries(name, description, language) values('Бразилия', 'государство', 'португальский');
 select * from countries;
 
-insert into countries(date, population) values('01.03.1502', '210');
-select * from countries;
-
-update countries set description = 'Страна в Южной Америке с тропическим климатом';
-select * from countries;
+update countries 
+set description = 'Страна в Южной Америке с тропическим климатом', 
+date ='01.03.1502', population = '210'   where id = 1;
 
 delete from countries;

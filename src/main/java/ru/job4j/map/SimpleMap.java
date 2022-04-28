@@ -1,9 +1,6 @@
 package ru.job4j.map;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class SimpleMap<K, V> implements Map<K, V> {
 
@@ -15,21 +12,21 @@ public class SimpleMap<K, V> implements Map<K, V> {
 
     private int modCount = 0;
 
-    private MapEntry<K, V>[] table = new MapEntry[capacity];
+    private final MapEntry<K, V>[] table = new MapEntry[capacity];
 
     @Override
     public boolean put(K key, V value) {
-        if (count / capacity >= LOAD_FACTOR) {
+        if (count / capacity >= (int) LOAD_FACTOR) {
             expand();
         }
-        int bucketIndex = indexFor(hash(hashCode()));
+        int bucketIndex = indexFor(hash(Objects.hash(key)));
         MapEntry<K, V> e = new MapEntry<>(key, value);
         if (table[bucketIndex] == null) {
             table[bucketIndex] = e;
             count++;
             modCount++;
         }
-        return false;
+        return table[bucketIndex] == e;
     }
 
     private int hash(int hashCode) {
@@ -41,48 +38,58 @@ public class SimpleMap<K, V> implements Map<K, V> {
     }
 
     private void expand() {
-        table = new MapEntry[capacity * 2];
+        capacity = capacity * 2;
+        MapEntry<K, V>[] newTable = new MapEntry[capacity];
+        for (MapEntry<K, V> entry : table) {
+            int index = indexFor(hash(Objects.hash(entry.key)));
+            newTable[index] = entry;
+            }
     }
 
     @Override
     public V get(K key) {
-        for (MapEntry<K, V> entry : table) {
-            if (key.equals(entry)) {
-                int index = Arrays.asList(table).indexOf(entry);
-                MapEntry<K, V> e = table[index];
-                return e.key.equals(key) ? e.value : null;
-            }
-            modCount++;
-        }
-        return null;
+        int index = indexFor(hash(Objects.hash(key)));
+        MapEntry<K, V> e = table[index];
+        return e.value;
     }
 
     @Override
     public boolean remove(K key) {
-        for (MapEntry<K, V> entry : table) {
-            if (key.equals(entry)) {
-                int index = Arrays.asList(table).indexOf(entry);
-                MapEntry<K, V> e = table[index];
-                if (e.key.equals(key)) {
-                    List<MapEntry<K, V>> list = new ArrayList<>(Arrays.asList(table));
-                    list.remove(e);
-                    return true;
-                }
-            }
-            count--;
-            modCount++;
+        int index = indexFor(hash(Objects.hash(key)));
+        MapEntry<K, V> e = table[index];
+        List<MapEntry<K, V>> list = new ArrayList<>(Arrays.asList(table));
+        if (e.key.equals(key)) {
+            list.remove(e);
         }
-        return false;
+        count--;
+        modCount++;
+        return list.contains(e);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public Iterator<K> iterator() {
-        Iterator<K> iterator;
-        for (MapEntry<K, V> entry : table) {
-            iterator = (Iterator<K>) entry.key;
-        }
-        return null;
+        return new Iterator<>() {
+            int point = 0;
+
+            @Override
+            public boolean hasNext() {
+                for (int i = point; i < table.length; i++) {
+                    if (table[i] == null) {
+                        point = i;
+                        break;
+                    }
+                }
+                return point < table.length && table[point] != null;
+            }
+
+            @Override
+            public K next() {
+                if (!hasNext()) {
+                    throw new NoSuchElementException();
+                }
+                return table[point++].key;
+            }
+        };
     }
 
     private static class MapEntry<K, V> {

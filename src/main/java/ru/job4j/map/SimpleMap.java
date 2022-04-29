@@ -16,10 +16,10 @@ public class SimpleMap<K, V> implements Map<K, V> {
 
     @Override
     public boolean put(K key, V value) {
-        if (count / capacity >= (int) LOAD_FACTOR) {
+        if ((float) count / capacity >= LOAD_FACTOR) {
             expand();
         }
-        int bucketIndex = indexFor(hash(Objects.hash(key)));
+        int bucketIndex = indexFor(hash(key.hashCode()));
         MapEntry<K, V> e = new MapEntry<>(key, value);
         if (table[bucketIndex] == null) {
             table[bucketIndex] = e;
@@ -41,29 +41,28 @@ public class SimpleMap<K, V> implements Map<K, V> {
         capacity = capacity * 2;
         MapEntry<K, V>[] newTable = new MapEntry[capacity];
         for (MapEntry<K, V> entry : table) {
-            int index = indexFor(hash(Objects.hash(entry.key)));
+            int index = indexFor(hash(entry.key.hashCode()));
             newTable[index] = entry;
             }
     }
 
     @Override
     public V get(K key) {
-        int index = indexFor(hash(Objects.hash(key)));
+        int index = indexFor(hash(key.hashCode()));
         MapEntry<K, V> e = table[index];
         return e.value;
     }
 
     @Override
     public boolean remove(K key) {
-        int index = indexFor(hash(Objects.hash(key)));
+        int index = indexFor(hash(key.hashCode()));
         MapEntry<K, V> e = table[index];
-        List<MapEntry<K, V>> list = new ArrayList<>(Arrays.asList(table));
         if (e.key.equals(key)) {
-            list.remove(e);
+            table[index] = null;
         }
         count--;
         modCount++;
-        return list.contains(e);
+        return table[index] == null;
     }
 
     @Override
@@ -74,7 +73,7 @@ public class SimpleMap<K, V> implements Map<K, V> {
             @Override
             public boolean hasNext() {
                 for (int i = point; i < table.length; i++) {
-                    if (table[i] == null) {
+                    if (table[i] != null) {
                         point = i;
                         break;
                     }

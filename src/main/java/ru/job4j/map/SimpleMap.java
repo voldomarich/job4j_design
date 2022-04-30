@@ -12,7 +12,7 @@ public class SimpleMap<K, V> implements Map<K, V> {
 
     private int modCount = 0;
 
-    private final MapEntry<K, V>[] table = new MapEntry[capacity];
+    private MapEntry<K, V>[] table = new MapEntry[capacity];
 
     @Override
     public boolean put(K key, V value) {
@@ -43,6 +43,7 @@ public class SimpleMap<K, V> implements Map<K, V> {
         for (MapEntry<K, V> entry : table) {
             int index = indexFor(hash(entry.key.hashCode()));
             newTable[index] = entry;
+            table = newTable;
             }
     }
 
@@ -50,7 +51,7 @@ public class SimpleMap<K, V> implements Map<K, V> {
     public V get(K key) {
         int index = indexFor(hash(key.hashCode()));
         MapEntry<K, V> e = table[index];
-        return e.value;
+        return e.key.equals(key) ? e.value : null;
     }
 
     @Override

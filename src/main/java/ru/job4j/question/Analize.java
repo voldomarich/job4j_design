@@ -5,7 +5,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class Analize {
+
     public static Info diff(Set<User> previous, Set<User> current) {
+
         int countAdded = 0;
         int countChanged = 0;
         int countDeleted = 0;
@@ -22,8 +24,8 @@ public class Analize {
                 } else if (!map.get(i).equals(map2.get(i))) {
                     countChanged++;
                 }
-                return new Info(countAdded, countChanged, countDeleted);
             }
+            return new Info(countAdded, countChanged, countDeleted);
         }
         return null;
     }

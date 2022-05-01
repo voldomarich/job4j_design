@@ -16,16 +16,18 @@ public class Analize {
                     .collect(Collectors.toMap(User::getId, User::getName));
             Map<Integer, String> map2 = current.stream()
                     .collect(Collectors.toMap(User::getId, User::getName));
-            for (int i = 0; i < map.size(); i++) {
-                if (map.containsKey(i) && !map2.containsKey(i)) {
-                    countDeleted++;
-                } else if (!map.containsKey(i) && map2.containsKey(i)) {
-                    countAdded++;
-                } else if (!map.get(i).equals(map2.get(i))) {
-                    countChanged++;
+            for (Integer key : map.keySet()) {
+                for (Integer key2 : map2.keySet()) {
+                    if (!map2.containsKey(key)) {
+                        countDeleted++;
+                    } else if (!map.containsKey(key2)) {
+                        countAdded++;
+                    } else if (key.equals(key2) && !map.get(key).equals(map2.get(key2))) {
+                        countChanged++;
+                    }
                 }
+                return new Info(countAdded, countChanged, countDeleted);
             }
-            return new Info(countAdded, countChanged, countDeleted);
         }
         return null;
     }

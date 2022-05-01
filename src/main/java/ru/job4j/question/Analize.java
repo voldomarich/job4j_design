@@ -5,7 +5,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class Analize {
-
     public static Info diff(Set<User> previous, Set<User> current) {
         int countAdded = 0;
         int countChanged = 0;

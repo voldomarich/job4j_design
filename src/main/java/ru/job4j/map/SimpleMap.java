@@ -26,7 +26,7 @@ public class SimpleMap<K, V> implements Map<K, V> {
             count++;
             modCount++;
         }
-        return table[bucketIndex] == e && e.key != null;
+        return table[bucketIndex] == e;
     }
 
     private int hash(int hashCode) {
@@ -41,12 +41,12 @@ public class SimpleMap<K, V> implements Map<K, V> {
         capacity = capacity * 2;
         MapEntry<K, V>[] newTable = new MapEntry[capacity];
         for (MapEntry<K, V> entry : table) {
-            int index = indexFor(hash(entry.key.hashCode()));
-            if (entry.key != null) {
+            if (entry != null) {
+                int index = indexFor(hash(entry.key.hashCode()));
                 newTable[index] = entry;
-                table = newTable;
             }
         }
+        table = newTable;
     }
 
     @Override
@@ -56,7 +56,7 @@ public class SimpleMap<K, V> implements Map<K, V> {
         if (e.key != null) {
             return e.key.equals(key) ? e.value : null;
         }
-        return e.value;
+        return null;
     }
 
     public int size() {
@@ -67,11 +67,11 @@ public class SimpleMap<K, V> implements Map<K, V> {
     public boolean remove(K key) {
         int index = indexFor(hash(key.hashCode()));
         MapEntry<K, V> e = table[index];
-        if (e.key.equals(key)) {
+        if (e != null && e.key.equals(key)) {
             table[index] = null;
+            count--;
+            modCount++;
         }
-        count--;
-        modCount++;
         return table[index] == null;
     }
 

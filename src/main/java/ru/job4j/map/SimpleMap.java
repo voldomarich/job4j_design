@@ -26,7 +26,7 @@ public class SimpleMap<K, V> implements Map<K, V> {
             count++;
             modCount++;
         }
-        return table[bucketIndex] == e;
+        return get(key) == value;
     }
 
     private int hash(int hashCode) {
@@ -53,35 +53,41 @@ public class SimpleMap<K, V> implements Map<K, V> {
     public V get(K key) {
         int index = indexFor(hash(key.hashCode()));
         MapEntry<K, V> e = table[index];
-        if (e.key != null) {
+        if (e != null && e.key != null) {
             return e.key.equals(key) ? e.value : null;
         }
         return null;
     }
 
     public int size() {
-        return table.length;
+        return count;
     }
 
     @Override
     public boolean remove(K key) {
+        boolean rsl = false;
         int index = indexFor(hash(key.hashCode()));
         MapEntry<K, V> e = table[index];
         if (e != null && e.key.equals(key)) {
             table[index] = null;
             count--;
             modCount++;
+            rsl = true;
         }
-        return table[index] == null;
+        return rsl;
     }
 
     @Override
     public Iterator<K> iterator() {
         return new Iterator<>() {
             int point = 0;
+            private final int expectedModCount = modCount;
 
             @Override
             public boolean hasNext() {
+                if (expectedModCount != modCount) {
+                    throw new ConcurrentModificationException();
+                }
                 for (int i = point; i < table.length; i++) {
                     if (table[i] != null) {
                         point = i;

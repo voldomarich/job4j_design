@@ -1,4 +1,3 @@
-
 package ru.job4j.map;
 
 import org.junit.Assert;
@@ -7,14 +6,15 @@ import org.junit.Test;
 
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
+import java.util.stream.IntStream;
 
 public class SimpleMapTest {
 
-    SimpleMap<String, int> map;
+    SimpleMap<String, Integer> map;
 
     @Before
     public void initData() {
-        SimpleMap<String, int> map = new SimpleMap<String, int>();
+        SimpleMap<String, Integer> map = new SimpleMap<>();
         map.put("word", 20);
         map.put("world", 14);
         map.put("vibe", 10);
@@ -22,8 +22,8 @@ public class SimpleMapTest {
 
     @Test
     public void whenGet() {
-        Assert.assertEquals(10, map.get("vibe"));
-        Assert.assertEquals(20, map.get("world"));
+        Assert.assertEquals(Integer.valueOf(10), map.get("vibe"));
+        Assert.assertEquals(Integer.valueOf(20), map.get("world"));
     }
 
     @Test
@@ -37,22 +37,14 @@ public class SimpleMapTest {
         Assert.assertEquals(3, map.size());
     }
 
-    @Test
-    public void whenGetIteratorTwiceThenStartAlwaysFromBeginning() {
-        Assert.assertEquals(1, map.iterator().next());
-        Assert.assertEquals(1, map.iterator().next());
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void whenRemoveByIncorrectIndexThenGetException() {
+        map.remove("will");
     }
 
     @Test
-    public void whenCheckIterator() {
-        Iterator<String> iterator = map.iterator();
-        Assert.assertTrue(iterator.hasNext());
-        Assert.assertEquals(1, iterator.next());
-        Assert.assertTrue(iterator.hasNext());
-        Assert.assertEquals(2, iterator.next());
-        Assert.assertTrue(iterator.hasNext());
-        Assert.assertEquals(3, iterator.next());
-        Assert.assertFalse(iterator.hasNext());
+    public void whenNoPlaceThenMustIncreaseCapacity() {
+        IntStream.range(3, 10).forEach(map::put);
     }
 
     @Test(expected = ConcurrentModificationException.class)

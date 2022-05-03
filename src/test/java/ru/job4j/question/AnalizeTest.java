@@ -8,7 +8,6 @@ import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.is;
 
 public class AnalizeTest {
-
     @Test
     public void whenNotChanged() {
         User u1 = new User(1, "A");

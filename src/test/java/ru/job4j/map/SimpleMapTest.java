@@ -8,6 +8,7 @@ import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.stream.IntStream;
 
+
 public class SimpleMapTest {
 
     SimpleMap<String, Integer> map;
@@ -40,11 +41,6 @@ public class SimpleMapTest {
     @Test(expected = IndexOutOfBoundsException.class)
     public void whenRemoveByIncorrectIndexThenGetException() {
         map.remove("will");
-    }
-
-    @Test
-    public void whenNoPlaceThenMustIncreaseCapacity() {
-        IntStream.range(3, 10).forEach(map::put);
     }
 
     @Test(expected = ConcurrentModificationException.class)

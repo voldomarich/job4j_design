@@ -16,6 +16,7 @@ public class SimpleMap<K, V> implements Map<K, V> {
 
     @Override
     public boolean put(K key, V value) {
+        boolean rsl = false;
         if ((float) count / capacity >= LOAD_FACTOR) {
             expand();
         }
@@ -25,8 +26,9 @@ public class SimpleMap<K, V> implements Map<K, V> {
             table[bucketIndex] = e;
             count++;
             modCount++;
+            rsl = true;
         }
-        return get(key) == value;
+        return rsl;
     }
 
     private int hash(int hashCode) {

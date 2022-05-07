@@ -6,8 +6,8 @@ import org.junit.Test;
 
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.stream.IntStream;
-
 
 public class SimpleMapTest {
 
@@ -15,7 +15,6 @@ public class SimpleMapTest {
 
     @Before
     public void initData() {
-        SimpleMap<String, Integer> map = new SimpleMap<>();
         map.put("word", 20);
         map.put("world", 14);
         map.put("vibe", 10);
@@ -24,7 +23,7 @@ public class SimpleMapTest {
     @Test
     public void whenGet() {
         Assert.assertEquals(Integer.valueOf(10), map.get("vibe"));
-        Assert.assertEquals(Integer.valueOf(20), map.get("world"));
+        Assert.assertEquals(Integer.valueOf(14), map.get("world"));
     }
 
     @Test
@@ -33,20 +32,27 @@ public class SimpleMapTest {
         Assert.assertEquals(2, map.size());
         Assert.assertFalse(map.remove("wrong"));
         map.put("water", 8);
-        map.put("w", 10);
+        map.put("w", 5);
         Assert.assertTrue(map.remove("water"));
         Assert.assertEquals(3, map.size());
     }
 
-    @Test(expected = IndexOutOfBoundsException.class)
+    @Test
+    public void whenRemoveByIncorrectKey() {
+        Assert.assertFalse(map.remove("will"));
+    }
+
+    @Test(expected = NoSuchElementException.class)
     public void whenRemoveByIncorrectIndexThenGetException() {
-        map.remove("will");
+        Iterator<String> iterator = map.iterator();
+        map.put("key", 5);
+        iterator.hasNext();
     }
 
     @Test(expected = ConcurrentModificationException.class)
     public void whenAddAfterGetIteratorThenMustBeException() {
         Iterator<String> iterator = map.iterator();
-        map.put("key", 10);
+        map.put("key", 5);
         iterator.next();
     }
 
@@ -55,5 +61,10 @@ public class SimpleMapTest {
         Iterator<String> iterator = map.iterator();
         map.remove("world");
         iterator.next();
+    }
+
+    @Test
+    public void whenNoPlaceThenMustIncreaseCapacity() {
+        IntStream.range(3, 10).forEach((k, v) -> map.put(k, v));
     }
 }

@@ -1,5 +1,6 @@
 package ru.job4j.tdd;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -11,17 +12,19 @@ import static org.hamcrest.Matchers.is;
 
 public class CinemaTest {
 
-    @Test
+    @Ignore
+    @Test(expected = IllegalArgumentException.class)
     public void whenBuy() {
         Account account = new AccountCinema();
         Cinema cinema = new Cinema3D();
         Calendar date = Calendar.getInstance();
-        date.set(2020, 10, 10, 23, 00);
+        date.set(2020, Calendar.NOVEMBER, 10, 23, 0);
         Ticket ticket = cinema.buy(account, 1, 1, date);
         assertThat(ticket, is(new Ticket3D()));
     }
 
-    @Test
+    @Ignore
+    @Test(expected = IllegalArgumentException.class)
     public void whenFind() {
         Cinema cinema = new Cinema3D();
         cinema.add(new Session3D());
@@ -29,23 +32,47 @@ public class CinemaTest {
         assertThat(sessions, is(Arrays.asList(new Session3D())));
     }
 
-    @Test
-    public void whenBuyTicketEqualSeat() {
+    @Ignore
+    @Test(expected = IllegalArgumentException.class)
+    public void whenInvalidSeat() {
+        Cinema cinema = new Cinema3D();
+        Account account = new AccountCinema();
+        Calendar date = Calendar.getInstance();
+        Ticket ticket = cinema.buy(account, 100, 20, date);
+        assertNull(ticket);
+    }
+
+    @Ignore
+    @Test(expected = IllegalArgumentException.class)
+    public void whenInvalidDate() {
         Account account = new AccountCinema();
         Cinema cinema = new Cinema3D();
         Calendar date = Calendar.getInstance();
-        date.set(2022, 05, 03, 20, 00);
+        date.set(2000, 14, 33, 25, 0);
+        Ticket ticket = cinema.buy(account, 10, 8, date);
+        assertNull(ticket);
+    }
+
+    @Ignore
+    @Test(expected = IllegalArgumentException.class)
+    public void whenBuyTicketSoldSeat() {
+        Account account = new AccountCinema();
+        Cinema cinema = new Cinema3D();
+        Calendar date = Calendar.getInstance();
+        date.set(2022, Calendar.MAY, 3, 20, 0);
         Ticket ticket = cinema.buy(account, 10, 8, date);
         assertThat(ticket, is(new Ticket3D()));
         Ticket ticket2 = cinema.buy(account, 10, 8, date);
         assertNull(ticket2);
     }
 
-    @Test
-    public void whenSessionOfCancel() {
+    @Ignore
+    @Test(expected = IllegalArgumentException.class)
+    public void whenSessionIsCancelled() {
         Cinema cinema = new Cinema3D();
         cinema.add(new Session3D());
         List<Session> sessions = cinema.find(session -> true);
+        assertTrue(sessions.contains(new Session3D()));
         sessions.remove(new Session3D());
         assertFalse(sessions.contains(new Session3D()));
     }

@@ -8,7 +8,7 @@ public interface Cinema {
 
     List<Session> find(Predicate<Session> filter);
 
-    Ticket buy(Account account, int row, int column, Calendar date);
+    Ticket buy(Account account, int row, int column, Calendar date) throws IllegalArgumentException;
 
     void add(Session session);
 }

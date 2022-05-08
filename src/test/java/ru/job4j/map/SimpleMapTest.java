@@ -6,7 +6,6 @@ import org.junit.Test;
 
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class SimpleMapTest {
@@ -66,6 +65,6 @@ public class SimpleMapTest {
 
     @Test
     public void whenNoPlaceThenMustIncreaseCapacity() {
-        IntStream.range(3, 10).collect(Collectors.toMap(v -> map.put(v)));
+        IntStream.range(3, 10).forEach(v -> map.put("new word", 15));
     }
 }

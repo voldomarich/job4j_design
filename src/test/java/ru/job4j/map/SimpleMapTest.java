@@ -5,8 +5,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ConcurrentModificationException;
+import java.util.HashMap;
 import java.util.Iterator;
-import java.util.stream.IntStream;
 
 public class SimpleMapTest {
 
@@ -65,6 +65,10 @@ public class SimpleMapTest {
 
     @Test
     public void whenNoPlaceThenMustIncreaseCapacity() {
-        Map.of("a", 1, "b", 2, "c", 3).forEach((k, v) -> map.put(v, k));
+        HashMap<String, Integer> test = new HashMap();
+        test.put("a", 1);
+        test.put("b", 2);
+        test.put("c", 3);
+        test.forEach((k, v) -> map.put(k, v));
     }
 }

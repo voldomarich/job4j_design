@@ -65,7 +65,7 @@ public class SimpleMapTest {
 
     @Test
     public void whenNoPlaceThenMustIncreaseCapacity() {
-        HashMap<String, Integer> test = new HashMap();
+        HashMap<String, Integer> test = new HashMap<>();
         test.put("a", 1);
         test.put("b", 2);
         test.put("c", 3);

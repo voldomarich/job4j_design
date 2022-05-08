@@ -65,6 +65,6 @@ public class SimpleMapTest {
 
     @Test
     public void whenNoPlaceThenMustIncreaseCapacity() {
-        IntStream.range(3, 10).forEach(v -> map.put("new word", 15));
+        Map.of("a", 1, "b", 2, "c", 3).forEach((k, v) -> map.put(v, k));
     }
 }

@@ -12,8 +12,7 @@ import static org.hamcrest.Matchers.is;
 
 public class CinemaTest {
 
-    @Ignore
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void whenBuy() {
         Account account = new AccountCinema();
         Cinema cinema = new Cinema3D();
@@ -23,8 +22,7 @@ public class CinemaTest {
         assertThat(ticket, is(new Ticket3D()));
     }
 
-    @Ignore
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void whenFind() {
         Cinema cinema = new Cinema3D();
         cinema.add(new Session3D());
@@ -32,7 +30,6 @@ public class CinemaTest {
         assertThat(sessions, is(Arrays.asList(new Session3D())));
     }
 
-    @Ignore
     @Test(expected = IllegalArgumentException.class)
     public void whenInvalidSeat() {
         Cinema cinema = new Cinema3D();
@@ -42,7 +39,6 @@ public class CinemaTest {
         assertNull(ticket);
     }
 
-    @Ignore
     @Test(expected = IllegalArgumentException.class)
     public void whenInvalidDate() {
         Account account = new AccountCinema();
@@ -50,10 +46,8 @@ public class CinemaTest {
         Calendar date = Calendar.getInstance();
         date.set(2000, 14, 33, 25, 0);
         Ticket ticket = cinema.buy(account, 10, 8, date);
-        assertNull(ticket);
     }
 
-    @Ignore
     @Test(expected = IllegalArgumentException.class)
     public void whenBuyTicketSoldSeat() {
         Account account = new AccountCinema();
@@ -63,11 +57,9 @@ public class CinemaTest {
         Ticket ticket = cinema.buy(account, 10, 8, date);
         assertThat(ticket, is(new Ticket3D()));
         Ticket ticket2 = cinema.buy(account, 10, 8, date);
-        assertNull(ticket2);
     }
 
-    @Ignore
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void whenSessionIsCancelled() {
         Cinema cinema = new Cinema3D();
         cinema.add(new Session3D());

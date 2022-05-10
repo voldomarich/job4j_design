@@ -5,11 +5,8 @@ import java.util.*;
 public class SimpleMap<K, V> implements Map<K, V> {
 
     private static final float LOAD_FACTOR = 0.75f;
-
     private int capacity = 8;
-
     private int count = 0;
-
     private int modCount = 0;
 
     private MapEntry<K, V>[] table = new MapEntry[capacity];
@@ -32,7 +29,7 @@ public class SimpleMap<K, V> implements Map<K, V> {
     }
 
     private int hash(int hashCode) {
-        return hashCode % table.length; 
+        return hashCode ^ (hashCode >>> 16);
     }
 
     private int indexFor(int hash) {

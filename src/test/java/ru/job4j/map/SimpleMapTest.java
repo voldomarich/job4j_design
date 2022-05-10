@@ -5,70 +5,82 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ConcurrentModificationException;
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class SimpleMapTest {
 
-    SimpleMap<String, Integer> map;
+    SimpleMap<Integer, String> map;
 
     @Before
     public void initData() {
         map = new SimpleMap<>();
-        map.put("word", 20);
-        map.put("world", 14);
-        map.put("vibe", 10);
+        map.put(1, "word");
+        map.put(2, "world");
+        map.put(3, "water");
     }
 
     @Test
     public void whenGet() {
-        Assert.assertEquals(Integer.valueOf(10), map.get("vibe"));
-        Assert.assertEquals(Integer.valueOf(14), map.get("world"));
+        Assert.assertEquals("word", map.get(1));
+        Assert.assertEquals("world", map.get(2));
     }
 
     @Test
     public void whenRemove() {
-        Assert.assertTrue(map.remove("world"));
+        Assert.assertTrue(map.remove(3));
         Assert.assertEquals(2, map.size());
-        Assert.assertFalse(map.remove("wrong"));
-        map.put("water", 8);
-        map.put("w", 5);
-        Assert.assertTrue(map.remove("water"));
+        map.put(3, "will");
+        map.put(4, "water");
+        Assert.assertTrue(map.remove(4));
         Assert.assertEquals(3, map.size());
     }
 
     @Test
     public void whenRemoveByIncorrectKey() {
-        Assert.assertFalse(map.remove("will"));
+        Assert.assertFalse(map.remove(10));
+    }
+
+    @Test
+    public void whenHasNext() {
+        Iterator<Integer> iterator = map.iterator();
+        Assert.assertTrue(iterator.hasNext());
+        Assert.assertEquals(Integer.valueOf(1), iterator.next());
+        Assert.assertEquals(Integer.valueOf(2), iterator.next());
+        Assert.assertEquals(Integer.valueOf(3), iterator.next());
+        Assert.assertFalse(iterator.hasNext());
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void whenNext() {
+        Iterator<Integer> iterator = map.iterator();
+        iterator.next();
+        iterator.next();
+        iterator.next();
+        iterator.next();
     }
 
     @Test(expected = ConcurrentModificationException.class)
-    public void whenRemoveByIncorrectIndexThenGetException() {
-        Iterator<String> iterator = map.iterator();
-        map.put("key", 5);
-        iterator.hasNext();
-    }
-
-    @Test(expected = ConcurrentModificationException.class)
-    public void whenAddAfterGetIteratorThenMustBeException() {
-        Iterator<String> iterator = map.iterator();
-        map.put("key", 5);
+    public void whenPutAfterGetIteratorThenMustBeException() {
+        Iterator<Integer> iterator = map.iterator();
+        map.put(4, "a");
         iterator.next();
     }
 
     @Test(expected = ConcurrentModificationException.class)
     public void whenRemoveAfterGetIteratorThenMustBeException() {
-        Iterator<String> iterator = map.iterator();
-        map.remove("world");
+        Iterator<Integer> iterator = map.iterator();
+        map.remove(1);
         iterator.next();
     }
 
     @Test
     public void whenNoPlaceThenMustIncreaseCapacity() {
-        HashMap<String, Integer> test = new HashMap<>();
-        test.put("a", 1);
-        test.put("b", 2);
-        test.put("c", 3);
-        test.forEach((k, v) -> map.put(k, v));
+        map.put(4, "d");
+        map.put(5, "e");
+        map.put(6, "f");
+        map.put(7, "g");
+        map.put(8, "h");
+        map.forEach((k) -> map.put(k, map.get(k)));
     }
 }

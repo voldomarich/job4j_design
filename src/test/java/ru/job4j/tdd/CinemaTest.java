@@ -53,7 +53,6 @@ public class CinemaTest {
         Calendar date = Calendar.getInstance();
         date.set(2022, Calendar.MAY, 3, 20, 0);
         Ticket ticket = cinema.buy(account, 10, 8, date);
-        assertThat(ticket, is(new Ticket3D()));
         Ticket ticket2 = cinema.buy(account, 10, 8, date);
     }
 

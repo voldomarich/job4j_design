@@ -1,6 +1,5 @@
 package ru.job4j.tdd;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -36,7 +35,6 @@ public class CinemaTest {
         Account account = new AccountCinema();
         Calendar date = Calendar.getInstance();
         Ticket ticket = cinema.buy(account, 100, 20, date);
-        assertNull(ticket);
     }
 
     @Test(expected = IllegalArgumentException.class)

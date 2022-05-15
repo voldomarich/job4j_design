@@ -7,7 +7,7 @@ import java.util.NoSuchElementException;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.is;
 
-public class SimpleQueueTest {
+public class  SimpleQueueTest {
 
     @Test
     public void whenPushPoll() {

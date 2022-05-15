@@ -1,6 +1,5 @@
 package ru.job4j.gc;
 
-
 public class User {
 
     private String name;
@@ -25,11 +24,6 @@ public class User {
 
     public void setScore(int score) {
         this.score = score;
-    }
-
-    @Override
-    protected void finalize() throws Throwable {
-        super.finalize();
     }
 
     public static void main(String[] args) {

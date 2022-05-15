@@ -1,6 +1,5 @@
 package ru.job4j.question;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.HashSet;
@@ -50,7 +49,6 @@ public class AnalizeTest {
         );
     }
 
-    @Ignore
     @Test
     public void whenOneAdded() {
         User u1 = new User(1, "A");
@@ -64,7 +62,6 @@ public class AnalizeTest {
         );
     }
 
-    @Ignore
     @Test
     public void whenAllChanged() {
         User u1 = new User(1, "A");
@@ -78,7 +75,6 @@ public class AnalizeTest {
         );
     }
 
-    @Ignore
     @Test
     public void whenIsEmpty() {
         Set<User> previous = new HashSet<>();

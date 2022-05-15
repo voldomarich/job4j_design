@@ -11,7 +11,8 @@ public class Analize {
         int countAdded = 0;
         int countChanged = 0;
         int countDeleted = 0;
-        if (!previous.isEmpty() || !current.isEmpty()) {
+
+        if (!previous.isEmpty() && !current.isEmpty()) {
             Map<Integer, String> map = previous.stream()
                     .collect(Collectors.toMap(User::getId, User::getName));
             Map<Integer, String> map2 = current.stream()
@@ -19,12 +20,11 @@ public class Analize {
             for (Integer key : map.keySet()) {
                 if (!map2.containsKey(key)) {
                     countDeleted++;
-                } else if (!map.containsKey(key) && map2.containsKey(key)) {
-                    countAdded++;
                 } else if (!map.get(key).equals(map2.get(key))) {
                     countChanged++;
                 }
             }
+            countAdded = countDeleted + current.size() - previous.size();
             return new Info(countAdded, countChanged, countDeleted);
         }
         return null;

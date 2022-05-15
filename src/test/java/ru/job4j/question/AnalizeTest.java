@@ -2,12 +2,14 @@ package ru.job4j.question;
 
 import org.junit.Test;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.is;
 
 public class AnalizeTest {
+
     @Test
     public void whenNotChanged() {
         User u1 = new User(1, "A");
@@ -70,6 +72,15 @@ public class AnalizeTest {
         assertThat(
                 Analize.diff(previous, current),
                 is(new Info(1, 1, 1))
+        );
+    }
+
+    @Test
+    public void whenIsEmpty() {
+        Set<User> previous = new HashSet<>();
+        Set<User> current = Set.of(new User(1, "AA"), new User(4, "D"));
+        assertNull(
+                Analize.diff(previous, current)
         );
     }
 }

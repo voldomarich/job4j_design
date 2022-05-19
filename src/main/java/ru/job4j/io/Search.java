@@ -9,9 +9,18 @@ import java.util.function.Predicate;
 
 public class Search {
 
+    public static void validation(String[] args) {
+        if (args.length == 0) {
+            throw new IllegalArgumentException("Root folder is null. Usage java -jar search.jar ROOT_FOLDER.");
+        } else if (args.length == 1) {
+            throw new IllegalArgumentException("Root folder only has one argument. Usage java -jar search.jar ROOT_FOLDER.");
+        }
+    }
+
     public static void main(String[] args) throws IOException {
-        Path start = Paths.get(".");
-        search(start, p -> p.toFile().getName().endsWith(".js")).forEach(System.out::println);
+        validation(args);
+        Path start = Paths.get(args[1]);
+        search(start, p -> p.toFile().getName().endsWith(args[0])).forEach(System.out::println);
     }
 
     public static List<Path> search(Path root, Predicate<Path> condition) throws IOException {

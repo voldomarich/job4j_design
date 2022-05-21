@@ -11,7 +11,8 @@ public class DuplicatesFinder {
     }
 
     public static List<Path> search() throws IOException {
-        Files.walkFileTree(Path.of("./"), new DuplicatesVisitor());
-        return new DuplicatesVisitor().getPaths();
+        DuplicatesVisitor duplicatesVisitor = new DuplicatesVisitor();
+        Files.walkFileTree(Path.of("./"), duplicatesVisitor);
+        return duplicatesVisitor.getPaths();
     }
 }

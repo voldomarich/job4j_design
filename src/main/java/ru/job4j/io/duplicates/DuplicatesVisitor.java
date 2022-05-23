@@ -6,7 +6,9 @@ import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class DuplicatesVisitor extends SimpleFileVisitor<Path> {
 
@@ -17,7 +19,9 @@ public class DuplicatesVisitor extends SimpleFileVisitor<Path> {
 
         FileProperty fileProperty = new FileProperty(file.toFile().getTotalSpace(),
                 file.toFile().getName());
-        if (file.toFile().getName().equals(fileProperty.getName())) {
+        Set<FileProperty> set = new HashSet<>();
+        set.add(fileProperty);
+        if (set.contains(file)) {
             result.add(file);
         }
         return FileVisitResult.CONTINUE;

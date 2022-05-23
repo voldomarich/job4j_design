@@ -7,7 +7,7 @@ import java.util.List;
 
 public class DuplicatesFinder {
     public static void main(String[] args) throws IOException {
-        search();
+        System.out.println(search());
     }
 
     public static List<Path> search() throws IOException {

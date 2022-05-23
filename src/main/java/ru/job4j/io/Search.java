@@ -11,18 +11,22 @@ import java.util.function.Predicate;
 public class Search {
 
     public static boolean validation(String[] args) {
-        File file = new File(args[0]);
-        File file2 = new File(args[1]);
-        if (args.length == 2 && file.exists() && file.isDirectory() && file2.getName().startsWith(".")) {
-            return true;
-        } else if (args.length == 1) {
-             throw new IllegalArgumentException("Root folder only has one argument. "
-                    + "Usage java -jar search.jar ROOT_FOLDER.");
-        } else if (args.length == 0) {
-            throw new IllegalArgumentException("Root folder is null. "
-                    + "Usage java -jar search.jar ROOT_FOLDER.");
+        if (args.length == 2) {
+            File file = new File(args[0]);
+            if (!file.isFile()) {
+                throw new IllegalArgumentException("Root folder only has one argument. "
+                        + "Usage java -jar search.jar ROOT_FOLDER.");
+            }
+            if (!file.isDirectory()) {
+                throw new IllegalArgumentException("Root folder is null. "
+                        + "Usage java -jar search.jar ROOT_FOLDER.");
+            }
+            if (args[1].startsWith(".")) {
+                return true;
+            }
         }
-        return false;
+        throw new IllegalArgumentException("Root folder is null. "
+                + "Usage java -jar search.jar ROOT_FOLDER.");
     }
 
     public static void main(String[] args) throws IOException {

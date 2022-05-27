@@ -81,6 +81,5 @@ public class SimpleMapTest {
         map.put(6, "f");
         map.put(7, "g");
         map.put(8, "h");
-        map.forEach((k) -> map.put(k, map.get(k)));
     }
 }

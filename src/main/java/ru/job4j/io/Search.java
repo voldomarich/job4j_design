@@ -14,15 +14,16 @@ public class Search {
         if (args.length == 2) {
             File file = new File(args[0]);
             if (!file.isFile()) {
-                throw new IllegalArgumentException("Root folder only has one argument. "
+                throw new IllegalArgumentException("Root folder is not file. "
                         + "Usage java -jar search.jar ROOT_FOLDER.");
             }
             if (!file.isDirectory()) {
-                throw new IllegalArgumentException("Root folder is null. "
+                throw new IllegalArgumentException("Root folder is not directory. "
                         + "Usage java -jar search.jar ROOT_FOLDER.");
             }
-            if (args[1].startsWith(".")) {
-                return true;
+            if (!args[1].startsWith(".")) {
+                throw new IllegalArgumentException("Root folder only has one argument. "
+                        + "Usage java -jar search.jar ROOT_FOLDER.");
             }
         }
         throw new IllegalArgumentException("Root folder is null. "

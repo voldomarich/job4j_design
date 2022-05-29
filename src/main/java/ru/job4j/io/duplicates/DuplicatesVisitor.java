@@ -25,7 +25,7 @@ public class DuplicatesVisitor extends SimpleFileVisitor<Path> {
         set.add(fileProperty);
         if (set.size() != count) {
             for (FileProperty f : set) {
-                result.add(f.toPath);
+                result.add(Path.of(String.valueOf(f)));
             }
         }
         return FileVisitResult.CONTINUE;

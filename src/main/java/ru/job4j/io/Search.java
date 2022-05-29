@@ -22,12 +22,16 @@ public class Search {
                         + "Usage java -jar search.jar ROOT_FOLDER.");
             }
             if (!args[1].startsWith(".")) {
-                throw new IllegalArgumentException("Root folder only has one argument. "
+                throw new IllegalArgumentException("Root folder only has one argument "
+                        + "and has to have one more argument. "
                         + "Usage java -jar search.jar ROOT_FOLDER.");
             }
         }
-        throw new IllegalArgumentException("Root folder is null. "
-                + "Usage java -jar search.jar ROOT_FOLDER.");
+        if (args.length != 2) {
+            throw new IllegalArgumentException("Root folder is null. "
+                    + "Usage java -jar search.jar ROOT_FOLDER.");
+        }
+        return false;
     }
 
     public static void main(String[] args) throws IOException {

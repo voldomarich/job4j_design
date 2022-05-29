@@ -12,8 +12,8 @@ import java.util.Set;
 
 public class DuplicatesVisitor extends SimpleFileVisitor<Path> {
 
-    List<Path> result = new ArrayList<>();
-    int count = 0;
+    private List<Path> result = new ArrayList<>();
+    private int count = 0;
 
     @Override
     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
@@ -23,8 +23,10 @@ public class DuplicatesVisitor extends SimpleFileVisitor<Path> {
         count++;
         Set<FileProperty> set = new HashSet<>();
         set.add(fileProperty);
-        if (!set.isEmpty() && set.size() != count) {
-            result.add(file);
+        if (set.size() != count) {
+            for (FileProperty f : set) {
+                result.add(f.toPath);
+            }
         }
         return FileVisitResult.CONTINUE;
     }

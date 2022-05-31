@@ -13,20 +13,30 @@ import java.util.Set;
 public class DuplicatesVisitor extends SimpleFileVisitor<Path> {
 
     private List<Path> result = new ArrayList<>();
-    private int count = 0;
 
     @Override
     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
 
         FileProperty fileProperty = new FileProperty(file.toFile().getTotalSpace(),
                 file.toFile().getName());
-        count++;
+        List<FileProperty> list = new ArrayList<>();
+        list.add(fileProperty);
         Set<FileProperty> set = new HashSet<>();
-        set.add(fileProperty);
-        if (set.size() != count) {
-            for (FileProperty f : set) {
-                result.add(Path.of(String.valueOf(f)));
+        for (int i = 0; i < list.size(); i++) {
+            FileProperty f = list.get(i);
+            if (f == null) {
+                continue;
             }
+            for (int j = 0; j < list.size(); j++) {
+                if (i == j) {
+                    continue;
+                }
+                FileProperty f2 = list.get(j);
+                if (f.equals(f2)) {
+                    set.add(f2);
+                }
+            }
+            result.add(file);
         }
         return FileVisitResult.CONTINUE;
     }

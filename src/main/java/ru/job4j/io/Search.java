@@ -13,21 +13,21 @@ public class Search {
     public static boolean validation(String[] args) {
         if (args.length != 2) {
             throw new IllegalArgumentException("Root folder is null. "
-                    + "Usage java -jar search.jar ROOT_FOLDER.");
+                    + "search.jar ROOT_FOLDER.");
         }
             File file = new File(args[0]);
             if (!file.isFile()) {
                 throw new IllegalArgumentException("Root folder is not file. "
-                        + "Usage java -jar search.jar ROOT_FOLDER.");
+                        + "search.jar ROOT_FOLDER.");
             }
             if (!file.isDirectory()) {
                 throw new IllegalArgumentException("Root folder is not directory. "
-                        + "Usage java -jar search.jar ROOT_FOLDER.");
+                        + "search.jar ROOT_FOLDER.");
             }
             if (!args[1].startsWith(".")) {
                 throw new IllegalArgumentException("Root folder only has one argument "
                         + "and has to have one more argument. "
-                        + "Usage java -jar search.jar ROOT_FOLDER.");
+                        + "search.jar ROOT_FOLDER.");
             }
             return true;
         }

@@ -12,22 +12,18 @@ public class Search {
 
     public static boolean validation(String[] args) {
         if (args.length != 2) {
-            throw new IllegalArgumentException("Root folder is null. "
-                    + "search.jar ROOT_FOLDER.");
+            throw new IllegalArgumentException("Root folder only has one argument "
+                    + "Usage java -jar search.jar ROOT_FOLDER.");
         }
             File file = new File(args[0]);
             if (!file.isFile()) {
-                throw new IllegalArgumentException("Root folder is not file. "
-                        + "search.jar ROOT_FOLDER.");
+                throw new IllegalArgumentException(String.format("Not exist %s", file.getAbsoluteFile()));
             }
             if (!file.isDirectory()) {
-                throw new IllegalArgumentException("Root folder is not directory. "
-                        + "search.jar ROOT_FOLDER.");
+                throw new IllegalArgumentException(String.format("Not directory %s", file.getAbsoluteFile()));
             }
-            if (!args[1].startsWith(".")) {
-                throw new IllegalArgumentException("Root folder only has one argument "
-                        + "and has to have one more argument. "
-                        + "search.jar ROOT_FOLDER.");
+            if (!args[1].endsWith(".js")) {
+                throw new IllegalArgumentException("you have to look for format file .js");
             }
             return true;
         }

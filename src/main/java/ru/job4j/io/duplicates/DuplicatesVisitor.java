@@ -22,20 +22,7 @@ public class DuplicatesVisitor extends SimpleFileVisitor<Path> {
         List<FileProperty> list = new ArrayList<>();
         list.add(fileProperty);
         Set<FileProperty> set = new HashSet<>();
-        for (int i = 0; i < list.size(); i++) {
-            FileProperty f = list.get(i);
-            if (f == null) {
-                continue;
-            }
-            for (int j = 0; j < list.size(); j++) {
-                if (i == j) {
-                    continue;
-                }
-                FileProperty f2 = list.get(j);
-                if (f.equals(f2)) {
-                    set.add(f2);
-                }
-            }
+        if (set.equals(list)) {
             result.add(file);
         }
         return FileVisitResult.CONTINUE;

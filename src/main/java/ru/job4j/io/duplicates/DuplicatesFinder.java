@@ -6,7 +6,6 @@ import java.nio.file.Path;
 import java.util.List;
 
 public class DuplicatesFinder {
-
     public static void main(String[] args) throws IOException {
         System.out.println(search());
     }

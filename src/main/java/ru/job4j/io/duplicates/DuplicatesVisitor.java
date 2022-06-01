@@ -5,30 +5,30 @@ import java.nio.file.FileVisitResult;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class DuplicatesVisitor extends SimpleFileVisitor<Path> {
 
-    private List<Path> result = new ArrayList<>();
+    private Map<FileProperty, List<Path>> map = new HashMap<>();
 
     @Override
     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
 
         FileProperty fileProperty = new FileProperty(file.toFile().getTotalSpace(),
                 file.toFile().getName());
-        List<FileProperty> list = new ArrayList<>();
-        list.add(fileProperty);
-        Set<FileProperty> set = new HashSet<>();
-        if (set.equals(list)) {
-            result.add(file);
+        if (!map.containsKey(fileProperty)) {
+            map.put(fileProperty, new ArrayList<>());
         }
+        map.get(fileProperty).add(file);
         return FileVisitResult.CONTINUE;
     }
 
     public List<Path> getPaths() {
-        return result;
+        for (FileProperty fileProperty : map.keySet()) {
+            if (map.get(fileProperty).size() > 1) {
+                return map.get(fileProperty);
+            }
+        }
+        return null;
     }
 }

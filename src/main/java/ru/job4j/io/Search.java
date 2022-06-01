@@ -17,7 +17,7 @@ public class Search {
                     );
         }
             File file = new File(args[0]);
-            if (!file.isFile()) {
+            if (!file.exists()) {
                 throw new IllegalArgumentException(String.format("Not exist %s", file.getAbsoluteFile()));
             }
             if (!file.isDirectory()) {

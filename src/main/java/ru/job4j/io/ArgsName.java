@@ -8,34 +8,45 @@ public class ArgsName  {
     private final Map<String, String> values = new HashMap<>();
 
     public String get(String key) {
+        if (!values.containsKey(key)) {
+            throw new IllegalArgumentException("Корневая папка не содержит аргументов"
+            );
+        }
         return values.get(key);
     }
 
     private void parse(String[] args) {
+        String[] array = args[0].split(",");
+        for (String s : array) {
+            if (!s.startsWith("-")) {
+                throw new IllegalArgumentException("Параметр не соответствует формату"
+                );
+            }
+            if (!s.contains("=")) {
+                throw new IllegalArgumentException("Параметр не содержит либо ключа, либо значения"
+                );
+            }
+            if (s.endsWith("=")) {
+                throw new IllegalArgumentException("Параметр не содержит значения"
+                );
+            }
+            if (s.startsWith("-=")) {
+                throw new IllegalArgumentException("Параметр не соответствует формату"
+                );
+            }
+            String[] x = s.split("=");
+            if (x[1] != null) {
+                values.put(x[0], x[1]);
+            }
+        }
+    }
+
+    public static ArgsName of(String[] args) {
         if (args.length == 0) {
             throw new IllegalArgumentException("Root folder is empty. "
                     + "Usage java -jar argsname.jar ROOT_FOLDER"
             );
         }
-        String[] x = args[0].split(",");
-        if (x.length != 2) {
-            throw new IllegalArgumentException("Root folder has to have two arguments. "
-                    + "Usage java -jar argsname.jar ROOT_FOLDER"
-            );
-        }
-        for (int i = 0; i < x.length; i++) {
-            if (!x[i].startsWith("-encoding")) {
-                if (!x[i].contains("=")) {
-                    throw new IllegalArgumentException("Argument has to be equal to something. "
-                            + "Usage java -jar argsname.jar ROOT_FOLDER"
-                    );
-                }
-                    values.put(x[i].split("=")[0].split("-")[1], x[i].split("=")[1]);
-                }
-            }
-        }
-
-    public static ArgsName of(String[] args) {
         ArgsName names = new ArgsName();
         names.parse(args);
         return names;

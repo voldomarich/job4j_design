@@ -18,7 +18,7 @@ public class ArgsName {
     private void parse(String[] args) {
         for (String s : args) {
             if (!s.startsWith("-")) {
-                throw new IllegalArgumentException("Параметр не соответствует формату"
+                throw new IllegalArgumentException("Параметр не соответствует формату, должен начинаться со знака -"
                 );
             }
             if (!s.contains("=")) {
@@ -30,11 +30,17 @@ public class ArgsName {
                 );
             }
             String[] string = s.split("=", 2);
-            if (!string[1].isEmpty()) {
-                values.put(string[0], string[1]);
+            if (string[1].isEmpty()) {
+                throw new IllegalArgumentException("Параметр не содержит значения"
+                );
+            }
+            if (s.contains(string[0])) {
+                throw new IllegalArgumentException("Несколько одинаковых ключей"
+                );
+            }
+                values.put(string[0].substring(1), string[1]);
             }
         }
-    }
 
     public static ArgsName of(String[] args) {
         if (args.length == 0) {
@@ -51,10 +57,10 @@ public class ArgsName {
         ArgsName jvm = ArgsName.of(new String[] {"-Xmx=512", "-encoding=UTF-8"});
         System.out.print(jvm.get("Xmx") + ", ");
         System.out.println(jvm.get("encoding"));
-
+        System.out.println();
 
         ArgsName zip = ArgsName.of(new String[] {"-out=project.zip", "-encoding=UTF-8"});
-        System.out.println(zip.get("out"));
+        System.out.print(zip.get("out") + ", ");
         System.out.println(zip.get("encoding"));
     }
 }

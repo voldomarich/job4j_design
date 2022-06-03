@@ -3,7 +3,7 @@ package ru.job4j.io;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ArgsName  {
+public class ArgsName {
 
     private final Map<String, String> values = new HashMap<>();
 
@@ -16,8 +16,7 @@ public class ArgsName  {
     }
 
     private void parse(String[] args) {
-        String[] array = args[0].split(",");
-        for (String s : array) {
+        for (String s : args) {
             if (!s.startsWith("-")) {
                 throw new IllegalArgumentException("Параметр не соответствует формату"
                 );
@@ -26,17 +25,13 @@ public class ArgsName  {
                 throw new IllegalArgumentException("Параметр не содержит либо ключа, либо значения"
                 );
             }
-            if (s.endsWith("=")) {
-                throw new IllegalArgumentException("Параметр не содержит значения"
-                );
-            }
             if (s.startsWith("-=")) {
-                throw new IllegalArgumentException("Параметр не соответствует формату"
+                throw new IllegalArgumentException("Параметр не содержит ключа"
                 );
             }
-            String[] x = s.split("=");
-            if (x[1] != null) {
-                values.put(x[0], x[1]);
+            String[] string = s.split("=", 2);
+            if (!string[1].isEmpty()) {
+                values.put(string[0], string[1]);
             }
         }
     }
@@ -54,9 +49,12 @@ public class ArgsName  {
 
     public static void main(String[] args) {
         ArgsName jvm = ArgsName.of(new String[] {"-Xmx=512", "-encoding=UTF-8"});
-        System.out.println(jvm.get("Xmx"));
+        System.out.print(jvm.get("Xmx") + ", ");
+        System.out.println(jvm.get("encoding"));
+
 
         ArgsName zip = ArgsName.of(new String[] {"-out=project.zip", "-encoding=UTF-8"});
         System.out.println(zip.get("out"));
+        System.out.println(zip.get("encoding"));
     }
 }

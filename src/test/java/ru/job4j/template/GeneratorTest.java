@@ -40,10 +40,19 @@ public class GeneratorTest {
     public void whenMapHasKeyPatternHasNot() {
         Compiler compiler = new Compiler();
         String template = "I am ${name}, Who are ${subject}?";
-        String values = "Vladimir, Igor, you";
         Map<String, String> map = new HashMap<>();
         map.put("name", "Vladimir");
         map.put("subject", "you");
+        map.put("name1", "Igor");
+        compiler.produce(template, map);
+    }
+
+    @Ignore
+    @Test(expected = IllegalArgumentException.class)
+    public void whenMapIsEmpty() {
+        Compiler compiler = new Compiler();
+        String template = "I am ${name}, Who are ${subject}?";
+        Map<String, String> map = new HashMap<>();
         compiler.produce(template, map);
     }
 }

@@ -20,10 +20,11 @@ public class ArgsNameTest {
         assertThat(jvm.get("Xmx"), is("512"));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void whenArgHasEqualKeys() {
         ArgsName jvm = ArgsName.of(new String[] {"-encoding=UTF-8", "-Xmx=512", "-Xmx=256"});
-        jvm.get("Xmx");
+        assertThat(jvm.get("Xmx"), is("512"));
+        assertThat(jvm.get("encoding"), is("UTF-8"));
     }
 
     @Test

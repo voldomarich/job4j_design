@@ -18,27 +18,26 @@ public class ArgsName {
     private void parse(String[] args) {
         for (String s : args) {
             if (!s.startsWith("-")) {
-                throw new IllegalArgumentException("Параметр не соответствует формату, должен начинаться со знака -"
+                throw new IllegalArgumentException("Входной параметр не соответствует формату, "
+                        + "должен начинаться со знака -"
                 );
             }
             if (!s.contains("=")) {
-                throw new IllegalArgumentException("Параметр не содержит либо ключа, либо значения"
+                throw new IllegalArgumentException("Входной параметр не содержит либо ключа, либо значения"
                 );
             }
             if (s.startsWith("-=")) {
-                throw new IllegalArgumentException("Параметр не содержит ключа"
+                throw new IllegalArgumentException("Входной параметр не содержит ключа"
                 );
             }
             String[] string = s.split("=", 2);
             if (string[1].isEmpty()) {
-                throw new IllegalArgumentException("Параметр не содержит значения"
+                throw new IllegalArgumentException("Входной параметр не содержит значения"
                 );
             }
-            if (s.contains(string[0])) {
-                throw new IllegalArgumentException("Несколько одинаковых ключей"
-                );
-            }
+            if (!values.containsKey(string[0].substring(1))) {
                 values.put(string[0].substring(1), string[1]);
+            }
             }
         }
 
@@ -62,5 +61,10 @@ public class ArgsName {
         ArgsName zip = ArgsName.of(new String[] {"-out=project.zip", "-encoding=UTF-8"});
         System.out.print(zip.get("out") + ", ");
         System.out.println(zip.get("encoding"));
+        System.out.println();
+
+        ArgsName amd = ArgsName.of(new String[] {"-encoding=UTF-8", "-Xmx=512", "-Xmx=256"});
+        System.out.print(amd.get("encoding") + ", ");
+        System.out.println(amd.get("Xmx"));
     }
 }

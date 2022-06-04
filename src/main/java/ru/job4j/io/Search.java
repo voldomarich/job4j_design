@@ -12,7 +12,7 @@ public class Search {
 
     public static boolean validation(String[] args) {
         if (args.length != 2) {
-            throw new IllegalArgumentException("Root folder has to have two arguments"
+            throw new IllegalArgumentException("Root folder has to have two arguments. "
                     + "Usage java -jar search.jar ROOT_FOLDER .JS"
                     );
         }

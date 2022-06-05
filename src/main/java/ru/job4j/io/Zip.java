@@ -1,7 +1,10 @@
 package ru.job4j.io;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -9,8 +12,13 @@ import java.util.zip.ZipOutputStream;
 public class Zip {
 
     public void packFiles(List<File> sources, File target) throws IOException {
+        List<Path> result = new LinkedList<>();
             for (File source : sources) {
-                Search.search(source.toPath(), p -> p.toFile().getName().endsWith(".class"));
+                BasicFileAttributes attr = Files.readAttributes(source.toPath(), BasicFileAttributes.class);
+                result = Search.search(source.toPath(), p -> p.toFile().getName().endsWith(".class"));
+            }
+            for (Path path : result) {
+                packSingleFile(path.toFile(), target);
             }
     }
 

@@ -10,7 +10,6 @@ import java.util.zip.ZipOutputStream;
 public class Zip {
 
     public void packFiles(List<File> sources, File target) throws IOException {
-        ArgsName arguments = ArgsName.of(new String[] {"-e=*.java", "-o=project.zip"});
         List<Path> result = new LinkedList<>();
         for (File source : sources) {
             result = Search.search(source.toPath(), p -> p.toFile().getName().endsWith("*.java"));
@@ -33,7 +32,9 @@ public class Zip {
     }
 
     public static void main(String[] args) {
+        ArgsName arguments = ArgsName.of(args);
         Zip zip = new Zip();
+        zip.packFiles(arguments, "zip");
         zip.packSingleFile(
                 new File("./pom.xml"),
                 new File("./pom.zip")

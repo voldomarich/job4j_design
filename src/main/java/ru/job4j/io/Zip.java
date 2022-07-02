@@ -2,13 +2,14 @@ package ru.job4j.io;
 
 import java.io.*;
 import java.nio.file.Path;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 public class Zip {
 
-    private static List<Path> result;
+    public static List<Path> result = new LinkedList<>();
 
     public void packFiles(List<File> sources, File target) throws IOException {
         for (Path path : result) {
@@ -29,8 +30,15 @@ public class Zip {
     }
 
     public static void main(String[] args) throws IOException {
+
+        if (args.length == 0) {
+            throw new IllegalArgumentException("Root folder is empty. "
+                    + "Usage java -jar argsname.jar ROOT_FOLDER"
+            );
+        }
         ArgsName arguments = ArgsName.of(args);
-        result.add((Path) Search.search(Path.of(args[0]), p -> p.toFile().getName().endsWith(args[1])));
+        result.addAll(Search.search(arguments.get("d"),
+                p -> !p.toFile().getName().endsWith(arguments.get("e"))));
         Zip zip = new Zip();
         zip.packSingleFile(
                 new File("./pom.xml"),

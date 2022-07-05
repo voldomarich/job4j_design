@@ -11,7 +11,7 @@ public class Zip {
 
     public static List<Path> result = new LinkedList<>();
 
-    public void packFiles(List<File> sources, File target) throws IOException {
+    public void packFiles(List<Path> sources, File target) throws IOException {
         for (Path path : result) {
             packSingleFile(path.toFile(), target);
         }
@@ -30,19 +30,18 @@ public class Zip {
     }
 
     public static void main(String[] args) throws IOException {
-
         if (args.length == 0) {
-            throw new IllegalArgumentException("Root folder is empty. "
+            throw new IllegalArgumentException("Корневая папка пуста "
                     + "Usage java -jar argsname.jar ROOT_FOLDER"
             );
         }
         ArgsName arguments = ArgsName.of(args);
-        result.addAll(Search.search(arguments.get("d"),
+        result.addAll(Search.search(Path.of(arguments.get("d")),
                 p -> !p.toFile().getName().endsWith(arguments.get("e"))));
         Zip zip = new Zip();
         zip.packSingleFile(
-                new File("./pom.xml"),
-                new File("./pom.zip")
+                new File(arguments.get("d")),
+                new File(arguments.get("o"))
         );
     }
 }

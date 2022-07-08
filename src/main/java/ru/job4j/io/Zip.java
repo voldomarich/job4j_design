@@ -9,13 +9,23 @@ import java.util.zip.ZipOutputStream;
 
 public class Zip {
 
-    public static List<Path> result = new LinkedList<>();
+    List<Path> result = new LinkedList<>();
 
-    public void packFiles(List<Path> sources, File target) throws IOException {
-        for (Path path : result) {
-            packSingleFile(path.toFile(), target);
+    public void packFiles(List<File> sources, File target) throws IOException {
+        try (ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(
+                new FileOutputStream(target)))) {
+            for (Path path : result) {
+                for (File source : sources) {
+                    zip.putNextEntry(new ZipEntry((ZipEntry) path));
+                    try (BufferedInputStream out = new BufferedInputStream(new FileInputStream(source))) {
+                        zip.write(out.readAllBytes());
+                    }
+                }
+            }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-    }
 
     public void packSingleFile(File source, File target) {
         try (ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(

@@ -33,5 +33,6 @@ public class Zip {
         ArgsName arguments = ArgsName.of(args);
         result.addAll(Search.search(Path.of(arguments.get("d")),
                 p -> !p.toFile().getName().endsWith(arguments.get("e"))));
+        File target = new File(arguments.get("o"));
     }
 }

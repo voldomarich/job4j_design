@@ -13,7 +13,7 @@ public class Zip {
         try (ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(
                 new FileOutputStream(target)))) {
             for (Path path : result) {
-                zip.putNextEntry(new ZipEntry(path.toFile().getPath()));
+                zip.putNextEntry(new ZipEntry(path.toString()));
                 try (BufferedInputStream out = new BufferedInputStream(new FileInputStream(path.toFile()))) {
                     zip.write(out.readAllBytes());
                 }
@@ -33,6 +33,13 @@ public class Zip {
         File file = new File(arguments.get("d"));
         if (!file.exists()) {
             throw new IllegalArgumentException(String.format("Not exist %s", file.getAbsoluteFile()));
+        }
+        if (!file.isDirectory()) {
+            throw new IllegalArgumentException(String.format("Not directory %s", file.getAbsoluteFile()));
+        }
+        if (file.toPath().endsWith(arguments.get("e"))) {
+            throw new IllegalArgumentException("Root folder has to have argument of format .java "
+                    + "Usage java -jar search.jar ROOT_FOLDER .JAVA");
         }
         List<Path> result = new LinkedList<>(Search.search(Path.of(arguments.get("d")),
                 p -> !p.toFile().getName().endsWith(arguments.get("e"))));

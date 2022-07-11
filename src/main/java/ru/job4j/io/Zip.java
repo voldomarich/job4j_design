@@ -13,7 +13,7 @@ public class Zip {
         try (ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(
                 new FileOutputStream(target)))) {
             for (Path path : result) {
-                zip.putNextEntry(new ZipEntry((ZipEntry) path));
+                zip.putNextEntry(new ZipEntry(path.toFile().getPath()));
                 try (BufferedInputStream out = new BufferedInputStream(new FileInputStream(path.toFile()))) {
                     zip.write(out.readAllBytes());
                 }
@@ -30,6 +30,10 @@ public class Zip {
             );
         }
         ArgsName arguments = ArgsName.of(args);
+        File file = new File(arguments.get("d"));
+        if (!file.exists()) {
+            throw new IllegalArgumentException(String.format("Not exist %s", file.getAbsoluteFile()));
+        }
         List<Path> result = new LinkedList<>(Search.search(Path.of(arguments.get("d")),
                 p -> !p.toFile().getName().endsWith(arguments.get("e"))));
         File target = new File(arguments.get("o"));

@@ -37,10 +37,6 @@ public class Zip {
         if (!file.isDirectory()) {
             throw new IllegalArgumentException(String.format("Not directory %s", file.getAbsoluteFile()));
         }
-        if (file.toPath().endsWith(arguments.get("e"))) {
-            throw new IllegalArgumentException("Root folder has to have argument of format .java "
-                    + "Usage java -jar search.jar ROOT_FOLDER .JAVA");
-        }
         List<Path> result = new LinkedList<>(Search.search(Path.of(arguments.get("d")),
                 p -> !p.toFile().getName().endsWith(arguments.get("e"))));
         File target = new File(arguments.get("o"));

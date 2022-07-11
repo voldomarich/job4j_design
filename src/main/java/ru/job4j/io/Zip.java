@@ -13,26 +13,27 @@ public class Zip {
         try (ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(
                 new FileOutputStream(target)))) {
             for (Path path : result) {
-                    zip.putNextEntry((ZipEntry) path);
-                    try (BufferedInputStream out = new BufferedInputStream(new FileInputStream(String.valueOf(path)))) {
-                        zip.write(out.readAllBytes());
-                    }
+                zip.putNextEntry(new ZipEntry((ZipEntry) path));
+                try (BufferedInputStream out = new BufferedInputStream(new FileInputStream(path.toFile()))) {
+                    zip.write(out.readAllBytes());
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+    }
 
     public static void main(String[] args) throws IOException {
-        List<Path> result = new LinkedList<>();
         if (args.length == 0) {
             throw new IllegalArgumentException("Корневая папка пуста "
                     + "Usage java -jar argsname.jar ROOT_FOLDER"
             );
         }
         ArgsName arguments = ArgsName.of(args);
-        result.addAll(Search.search(Path.of(arguments.get("d")),
+        List<Path> result = new LinkedList<>(Search.search(Path.of(arguments.get("d")),
                 p -> !p.toFile().getName().endsWith(arguments.get("e"))));
         File target = new File(arguments.get("o"));
+        Zip zip = new Zip();
+        zip.packFiles(result, target);
     }
 }

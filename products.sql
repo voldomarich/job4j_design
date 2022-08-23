@@ -20,6 +20,12 @@ insert into products(name, expired_date, price, type_id) values ('Сыр Тил�
 insert into products(name, expired_date, price, type_id) values ('Сыр Тильзитер', '04.09.2022', 280, 1);
 insert into products(name, expired_date, price, type_id) values ('Сыр Маасдам', '14.09.2022', 480, 1);
 insert into products(name, expired_date, price, type_id) values ('Сыр Бри', '24.09.2022', 820, 1);
+insert into products(name, expired_date, price, type_id) values ('Сыр Бри', '24.09.2022', 820, 1);
+insert into products(name, expired_date, price, type_id) values ('Сыр Бри', '24.09.2022', 820, 1);
+insert into products(name, expired_date, price, type_id) values ('Сыр Бри', '24.09.2022', 820, 1);
+insert into products(name, expired_date, price, type_id) values ('Сыр Бри', '24.09.2022', 820, 1);
+insert into products(name, expired_date, price, type_id) values ('Сыр Бри', '24.09.2022', 820, 1);
+insert into products(name, expired_date, price, type_id) values ('Сыр Бри', '24.09.2022', 820, 1);
 insert into products(name, expired_date, price, type_id) values ('Молоко А', '04.09.2022', 120, 2);
 insert into products(name, expired_date, price, type_id) values ('Молоко А', '04.09.2022', 120, 2);
 insert into products(name, expired_date, price, type_id) values ('Молоко А', '04.09.2022', 120, 2);
@@ -36,22 +42,43 @@ insert into products(name, expired_date, price, type_id) values ('Кефир А'
 insert into products(name, expired_date, price, type_id) values ('Айран А', '28.08.2022', 100, 2);
 insert into products(name, expired_date, price, type_id) values ('Мороженое Эскимо', '17.09.2022', 100, 3);
 insert into products(name, expired_date, price, type_id) values ('Мороженое Пломбир', '05.09.2022', 80, 3);
-insert into products(name, expired_date, price, type_id) values ('Мясо мороженое', '30.08.2022', 500, 3);
+insert into products(name, expired_date, price, type_id) values ('Мясо мороженое', '30.08.2022', 820, 3);
+insert into products(name, expired_date, price, type_id) values ('Мясо мороженое', '30.08.2022', 820, 3);
 insert into products(name, expired_date, price, type_id) values ('Пельмени', '06.08.2022', 450, 3);
 
-select * from products where type_id = 1;
-select * from products where expired_date < current_date;
-select max(price) from products;
+select p.name
+from products as p
+join type as t
+on p.type_id = t.id
+group by t.name, p.name
+having t.name = 'СЫР';
 
-select t.name, p.name, count(p.name)
+select * from products where name like 'Мороженое%' and name like '%мороженое';
+
+select * from products where expired_date < current_date;
+
+select name, max(price) from products group by price having price = max(price);
+
+select t.name, count(p.name)
 from products as p
 join type as t
 on p.type_id = t.id 
-group by t.name, p.name
+group by t.name
 order by count(p.name) desc, t.name;
 
-select * from products where type_id = 1 and type_id = 2;
-select type_id from products group by type_id having count(type_id) < 10;
-select name, type_id from products;
+select t.name, p.name
+from products as p
+join type as t
+on p.type_id = t.id
+group by t.name, p.name
+having t.name = 'СЫР'
+or t.name = 'МОЛОКО';
 
+select t.name, count(p.name)
+from products as p
+join type as t
+on p.type_id = t.id 
+group by t.name
+having count(p.type_id) < 10
+order by count(p.name) desc, t.name;
 

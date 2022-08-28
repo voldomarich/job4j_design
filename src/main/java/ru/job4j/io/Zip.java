@@ -30,6 +30,13 @@ public class Zip {
             );
         }
         ArgsName arguments = ArgsName.of(args);
+        File file = new File(arguments.get("d"));
+        if (!file.exists()) {
+            throw new IllegalArgumentException(String.format("Not exist %s", file.getAbsoluteFile()));
+        }
+        if (!file.isDirectory()) {
+            throw new IllegalArgumentException(String.format("Not directory %s", file.getAbsoluteFile()));
+        }
         List<Path> result = new LinkedList<>(Search.search(Path.of(arguments.get("d")),
                 p -> !p.toFile().getName().endsWith(arguments.get("e"))));
         File target = new File(arguments.get("o"));

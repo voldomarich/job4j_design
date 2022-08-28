@@ -13,7 +13,7 @@ public class Zip {
         try (ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(
                 new FileOutputStream(target)))) {
             for (Path path : result) {
-                zip.putNextEntry(new ZipEntry((ZipEntry) path));
+                zip.putNextEntry(new ZipEntry(path.toString()));
                 try (BufferedInputStream out = new BufferedInputStream(new FileInputStream(path.toFile()))) {
                     zip.write(out.readAllBytes());
                 }

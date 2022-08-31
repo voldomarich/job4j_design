@@ -34,10 +34,10 @@ create or replace function tax()
     returns trigger as
 $$
     BEGIN
-        update products
-        set price = price + price * 0.2
-		where id = new.id;
+        
+        new.price = old.price + old.price * 0.2;
         return new;
+		
     END;
 $$
 LANGUAGE 'plpgsql';
@@ -53,11 +53,10 @@ create or replace function add()
     returns trigger as
 $$
     BEGIN
-        update history_of_price
-        add price = new.price
-		add name = new.name
-		add data = new.data
-		where id = new.id;
+	
+        insert into history_of_price(name, price, date)
+        values(new.name, new.price, current_date);
+		
         return new;
     END;
 $$
@@ -71,13 +70,15 @@ create table history_of_price (
 );
 
 create trigger t2 
-before insert 
+after insert 
 on products
 for each row
 execute procedure add();
 
-insert into products (name, producer, count, price) VALUES ('триммер', 'J&J', 83, 2100);
+insert into products (name, producer, count, price) VALUES ('триммер', 'J&J', 80, 2100);
 insert into products (name, producer, count, price) VALUES ('электробритва', 'C', 20, 1500);
 
 select * from history_of_price;
+
+select * from products;
 

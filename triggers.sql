@@ -35,7 +35,7 @@ create or replace function tax()
 $$
     BEGIN
         
-        new.price = old.price + old.price * 0.2;
+        new.price = new.price + new.price * 0.2;
         return new;
 		
     END;

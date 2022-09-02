@@ -25,4 +25,14 @@ class ArrayItTest {
         assertThat(it.next()).isEqualTo(2);
         assertThat(it.next()).isEqualTo(3);
     }
+
+    @Test
+    void whenReadSequence2() {
+        ArrayIt it = new ArrayIt(
+                new int[] {0}
+        );
+        assertThat(it.hasNext()).isTrue();
+        assertThat(it.next()).isEqualTo(0);
+        assertThat(it.hasNext()).isFalse();
+    }
 }

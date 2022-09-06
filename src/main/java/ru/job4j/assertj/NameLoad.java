@@ -13,6 +13,7 @@ public class NameLoad {
         if (names.length == 0) {
             throw new IllegalArgumentException("Names array is empty");
         }
+
         values.putAll(Arrays.stream(names)
                 .map(String::trim)
                 .filter(this::validate)

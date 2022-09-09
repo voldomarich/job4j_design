@@ -82,16 +82,16 @@ $$
         result integer;
     begin
         if u_id > 4 THEN
-            delete from products where id = u_id;
-            select into result id from products where id = u_id;
+            select into result sum(price) from products where id = u_id;
+			delete from products where id = u_id;
         end if;
         if u_id = 2 THEN
+		    select into result sum(price) from products where id = u_id;
             delete from products where id = u_id;
-            select into result id from products where id = u_id;
         end if;
 		if i_count < 16 THEN
+		    select into result sum(price) from products where id = u_id;
             delete from products where id = u_id;
-            select into result id from products where id = u_id;
         end if;
         return result;
     end;
@@ -103,7 +103,6 @@ select f_delete_data(1, 15);
 select f_delete_data(5, 14);
 
 select * from products;
-
 
 
 select f_insert_data('вентилятор', 'TheWind', 20, 2800);

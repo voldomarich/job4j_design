@@ -16,30 +16,37 @@ as $$
     END
 $$;
 
-call insert_data('product_2', 'producer_2', 15, 32);
+call insert_data('обогреватель', 'TheWind', 15, 2800);
 call insert_data('глюкометр', 'J&J', 83, 600);
 call insert_data('термометр', 'C', 20, 280);
 call insert_data('напольные весы', 'BJ', 28, 4200);
 call insert_data('робот-пылесос', 'Takira', 14, 87000);
 
+select * from products;
 
-create or replace procedure delete_data(u_count integer, tax float, u_id integer)
+
+create or replace procedure delete_data(u_id integer, i_count integer)
 language 'plpgsql'
 as $$
     BEGIN
-        if u_count = 0 THEN
-            update products set count = 0;
+        if u_id < 4 THEN
+            delete from products where id = u_id;
         end if;
-        if u_id = 4 THEN
-            update products set count = 0;
+        if i_count < 16 THEN
+            delete from products where id = u_id;
         end if;
     END;
 $$;
 
 
-call delete_data(0, 0, 1);
-call delete_data(10, 0, 4);
+call delete_data(5, 14);
+call delete_data(2, 83);
 
+select * from products;
+
+
+delete from products;
+ALTER SEQUENCE products_id_seq RESTART WITH 1;
 
 
 
@@ -57,14 +64,16 @@ $$
 $$;
 
 
-select f_insert_data('product_1', 'producer_1', 25, 120);
-select f_insert_data('product_2', 'producer_1', 35, 30);
-select f_insert_data('product_3', 'producer_1', 48, 80);
+select f_insert_data('обогреватель', 'TheWind', 15, 2800);
+select f_insert_data('глюкометр', 'J&J', 83, 600);
+select f_insert_data('термометр', 'C', 20, 280);
+select f_insert_data('напольные весы', 'BJ', 28, 4200);
+select f_insert_data('робот-пылесос', 'Takira', 14, 87000);
+
+select * from products;
 
 
-
-
-create or replace function f_delete_data(u_count integer, tax float, u_id integer)
+create or replace function f_delete_data(u_id integer, i_count integer)
 returns integer
 language 'plpgsql'
 as
@@ -72,24 +81,33 @@ $$
     declare
         result integer;
     begin
-        if u_count = 0 THEN
-            update products set count = 0;
-            select into result count from products where id = u_id;
+        if u_id > 4 THEN
+            delete from products where id = u_id;
+            select into result id from products where id = u_id;
         end if;
         if u_id = 2 THEN
-            update products set count = 0;
-            select into result sum(count) from products where id = u_id;
+            delete from products where id = u_id;
+            select into result id from products where id = u_id;
+        end if;
+		if i_count < 16 THEN
+            delete from products where id = u_id;
+            select into result id from products where id = u_id;
         end if;
         return result;
     end;
 $$;
 
-select f_delete_data(0, 0, 1);
+select f_delete_data(4, 28);
+select f_delete_data(2, 83);
+select f_delete_data(1, 15);
+select f_delete_data(5, 14);
 
-select f_insert_data('product_2', 'producer_2', 101, 280);
-select f_insert_data('product_3', 'producer_3', 14, 250);
-
-select f_update_data(8, 0, 2);
+select * from products;
 
 
+
+select f_insert_data('вентилятор', 'TheWind', 20, 2800);
+select f_insert_data('радиатор', 'TheWind', 10, 2500);
+
+select * from products;
 

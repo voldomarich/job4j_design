@@ -44,10 +44,12 @@ public class School {
                         + "\"age\":100,"
                         + "\"teacher\":"
                         + "{"
-                        + "\"male\":\"35\":\"Alexey\""
+                        + "\"sex\":\"male\""
+                        + "\"age\":\"34\""
+                        + "\"name\":\"Vladimir\""
                         + "},"
                         + "\"scholars\":"
-                        + "[\"German\",\"Vladimir\",\"Victoria\"]"
+                        + "[\"Ivan\",\"Alexey\",\"Alexandra\"]"
                         + "}";
         final School schoolMod = gson.fromJson(schoolJson, School.class);
         System.out.println(schoolMod);

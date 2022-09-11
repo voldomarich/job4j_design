@@ -58,4 +58,5 @@ public class PrivateSchool {
         final PrivateSchool schoolMod = gson.fromJson(schoolJson, PrivateSchool.class);
         System.out.println(schoolMod);
     }
+
 }

@@ -101,4 +101,5 @@ public class School {
     public String[] getScholars() {
         return scholars;
     }
+
 }

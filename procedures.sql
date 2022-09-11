@@ -75,7 +75,7 @@ $$
         result integer;
     begin
           select into result sum(price) from products;
-		  delete from products where i_count < 16;
+		  delete from products where products.count < 16;
         return result;
     end;
 $$;

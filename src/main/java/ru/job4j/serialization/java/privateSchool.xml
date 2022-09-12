@@ -1,6 +1,6 @@
 <?xml version="1.1" encoding="UTF-8"?>
-        <privateSchool category="false", age="30"/>
-             <professor age="35", name="Alexey"/>
+        <privateSchool category="false" age="30">
+             <professor age="35" name="Alexey"/>
                   <scholars>
                         <scholar>German</scholar>
                         <scholar>Vladimir</scholar>

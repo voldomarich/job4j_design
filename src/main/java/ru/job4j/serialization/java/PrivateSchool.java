@@ -45,8 +45,8 @@ public class PrivateSchool {
         final String schoolJson =
                 "{"
                         + "\"category\":true,"
-                        + "\"age\":100,"
-                        + "\"name\":Школа сотрудничества,"
+                        + "\"age\":21,"
+                        + "\"name\":Школа,"
                         + "\"professor\":"
                         + "{"
                         + "\"age\":34,"
@@ -58,5 +58,4 @@ public class PrivateSchool {
         final PrivateSchool schoolMod = gson.fromJson(schoolJson, PrivateSchool.class);
         System.out.println(schoolMod);
     }
-
 }

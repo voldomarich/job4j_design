@@ -98,7 +98,7 @@ public class School {
         /* Выведем результат в консоль */
         System.out.println(jsonObject);
 
-        /* Преобразуем объект person в json-строку */
+        /* Преобразуем объект school в json-строку */
         System.out.println(new JSONObject(school));
     }
 }

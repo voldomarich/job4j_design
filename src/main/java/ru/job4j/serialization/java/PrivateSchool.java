@@ -45,8 +45,8 @@ public class PrivateSchool {
         final String schoolJson =
                 "{"
                         + "\"category\":true,"
-                        + "\"age\":21,"
-                        + "\"name\":Школа,"
+                        + "\"age\":32,"
+                        + "\"name\":Школа сотрудничества,"
                         + "\"professor\":"
                         + "{"
                         + "\"age\":34,"

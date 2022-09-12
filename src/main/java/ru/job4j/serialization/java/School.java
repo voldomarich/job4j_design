@@ -23,9 +23,25 @@ public class School {
         this.scholars = scholars;
     }
 
+    public boolean isCategory() {
+        return category;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public Teacher getTeacher() {
+        return teacher;
+    }
+
+    public String[] getScholars() {
+        return scholars;
+    }
+
     @Override
     public String toString() {
-        return "School{"
+        return "{"
                 + "category=" + category
                 + ", age=" + age
                 + ", teacher=" + teacher
@@ -37,7 +53,7 @@ public class School {
         final School school = new School(true, 100, new Teacher("male", 35, "Alexey"),
                 new String[]{"German", "Vladimir", "Victoria"});
 
-        /* Преобразуем объект person в json-строку. */
+        /* Преобразуем объект school в json-строку. */
         final Gson gson = new GsonBuilder().create();
         System.out.println(gson.toJson(school));
 
@@ -58,8 +74,8 @@ public class School {
         final School schoolMod = gson.fromJson(schoolJson, School.class);
         System.out.println(schoolMod);
 
-        JSONObject jsonTeacher = new JSONObject("\"teacher\":"
-                + "{"
+        JSONObject jsonTeacher = new JSONObject(
+                "{"
                 + "\"sex\":male,"
                 + "\"age\":34,"
                 + "\"name\":Vladimir"
@@ -80,27 +96,9 @@ public class School {
         jsonObject.put("scholars", jsonScholars);
 
         /* Выведем результат в консоль */
-        System.out.println(jsonObject.toString());
+        System.out.println(jsonObject);
 
         /* Преобразуем объект person в json-строку */
-        System.out.println(new JSONObject(school).toString());
+        System.out.println(new JSONObject(school));
     }
-
-    public boolean isCategory() {
-        return category;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public Teacher getTeacher() {
-        return teacher;
-    }
-
-    public String[] getScholars() {
-        return scholars;
-    }
-
-
 }

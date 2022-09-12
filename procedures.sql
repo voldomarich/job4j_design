@@ -28,7 +28,7 @@ create or replace procedure delete_data(u_id integer)
 language 'plpgsql'
 as $$
     BEGIN
-          delete from products where products.count < 16;
+          delete from products where id = u_id and products.count < 16;
     END;
 $$;
 
@@ -74,8 +74,8 @@ $$
     declare
         result integer;
     begin
-          select into result sum(price) from products;
-		  delete from products where products.count < 16;
+	    delete from products where id = u_id and products.count < 16;
+		select into result sum(price) from products;
         return result;
     end;
 $$;

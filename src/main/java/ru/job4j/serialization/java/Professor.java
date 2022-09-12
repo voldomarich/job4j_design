@@ -1,6 +1,14 @@
 package ru.job4j.serialization.java;
 
-public record Professor(int age, String name) {
+public class Professor {
+
+    private final int age;
+    private final String name;
+
+    public Professor(int age, String name) {
+        this.age = age;
+        this.name = name;
+    }
 
     public int getAge() {
         return age;

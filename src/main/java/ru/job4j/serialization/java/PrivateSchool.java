@@ -33,7 +33,7 @@ public class PrivateSchool {
     }
 
     public static void main(String[] args) {
-        final PrivateSchool privateSchool = new PrivateSchool(true, 100,
+        final PrivateSchool privateSchool = new PrivateSchool(true, 32,
                 "Школа сотрудничества", new Professor(35, "Alexey"),
                 new String[]{"German", "Vladimir", "Victoria"});
 
@@ -45,8 +45,8 @@ public class PrivateSchool {
         final String schoolJson =
                 "{"
                         + "\"category\":true,"
-                        + "\"age\":21,"
-                        + "\"name\":Школа,"
+                        + "\"age\":32,"
+                        + "\"name\":Школа_сотрудничества,"
                         + "\"professor\":"
                         + "{"
                         + "\"age\":34,"

@@ -75,7 +75,7 @@ $$
         result integer;
     begin
 	    delete from products where id = u_id and products.count < 16;
-		select into result sum(price) from products;
+		select into result sum(price * count) from products;
         return result;
     end;
 $$;

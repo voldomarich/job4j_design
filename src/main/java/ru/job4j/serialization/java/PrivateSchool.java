@@ -1,16 +1,29 @@
 package ru.job4j.serialization.java;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.annotation.*;
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.Arrays;
 
+@XmlRootElement(name = "privateSchool")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class PrivateSchool {
 
+    @XmlAttribute
     private final boolean category;
+
+    @XmlAttribute
     private final int age;
     private final String name;
     private final Professor professor;
+
+    @XmlElementWrapper(name = "scholars")
+    @XmlElement(name = "scholar")
     private final String[] scholars;
 
     public PrivateSchool(boolean category, int age, String name, Professor professor, String[] scholars) {
@@ -32,30 +45,29 @@ public class PrivateSchool {
                 + '}';
     }
 
-    public static void main(String[] args) {
-        final PrivateSchool privateSchool = new PrivateSchool(true, 32,
-                "Школа сотрудничества", new Professor(35, "Alexey"),
-                new String[]{"German", "Vladimir", "Victoria"});
+    public static void main(String[] args) throws JAXBException {
+            final PrivateSchool privateSchool = new PrivateSchool(true, 32,
+                    "Школа сотрудничества", new Professor(35, "Alexey"),
+                    new String[]{"German", "Vladimir", "Victoria"});
 
-        /* Преобразуем объект privateSchool в json-строку. */
-        final Gson gson = new GsonBuilder().create();
-        System.out.println(gson.toJson(privateSchool));
-
-        /* Модифицируем json-строку */
-        final String schoolJson =
-                "{"
-                        + "\"category\":true,"
-                        + "\"age\":32,"
-                        + "\"name\":Школа_сотрудничества,"
-                        + "\"professor\":"
-                        + "{"
-                        + "\"age\":34,"
-                        + "\"name\":Vladimir"
-                        + "},"
-                        + "\"scholars\":"
-                        + "[\"Ivan\",\"Alexey\",\"Alexandra\"]"
-                        + "}";
-        final PrivateSchool schoolMod = gson.fromJson(schoolJson, PrivateSchool.class);
-        System.out.println(schoolMod);
+            JAXBContext context = JAXBContext.newInstance(PrivateSchool.class);
+            Marshaller marshaller = context.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+            String xml = "";
+            try (StringWriter writer = new StringWriter()) {
+                marshaller.marshal(privateSchool, writer);
+                xml = writer.getBuffer().toString();
+                System.out.println(xml);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Unmarshaller unmarshaller = context.createUnmarshaller();
+            try (StringReader reader = new StringReader(xml)) {
+                 /* десериализуем */
+                 PrivateSchool result = (PrivateSchool) unmarshaller.unmarshal(reader);
+                 System.out.println(result);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
-}

@@ -1,8 +1,15 @@
 package ru.job4j.serialization.java;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name = "professor")
 public class Professor {
 
+    @XmlAttribute
     private final int age;
+
+    @XmlAttribute
     private final String name;
 
     public Professor(int age, String name) {
@@ -16,5 +23,13 @@ public class Professor {
 
     public String getName() {
         return name;
+    }
+
+    @Override
+    public String toString() {
+        return "Professor{"
+                + "age='" + age + '\''
+                + ", name=" + name + '\''
+                + '}';
     }
 }

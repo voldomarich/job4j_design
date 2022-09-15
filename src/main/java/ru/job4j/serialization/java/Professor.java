@@ -7,14 +7,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Professor {
 
     @XmlAttribute
-    private final int age;
+    private int age;
 
     @XmlAttribute
-    private final String name;
+    private String name;
 
     public Professor(int age, String name) {
         this.age = age;
         this.name = name;
+    }
+
+    public Professor() {
     }
 
     public int getAge() {

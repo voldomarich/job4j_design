@@ -15,16 +15,17 @@ import java.util.Arrays;
 public class PrivateSchool {
 
     @XmlAttribute
-    private final boolean category;
-
+    private boolean category;
     @XmlAttribute
-    private final int age;
-    private final String name;
-    private final Professor professor;
-
+    private int age;
+    private String name;
+    private Professor professor;
     @XmlElementWrapper(name = "scholars")
     @XmlElement(name = "scholar")
-    private final String[] scholars;
+    private String[] scholars;
+
+    public PrivateSchool() {
+    }
 
     public PrivateSchool(boolean category, int age, String name, Professor professor, String[] scholars) {
         this.category = category;

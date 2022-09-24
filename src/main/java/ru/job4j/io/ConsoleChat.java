@@ -2,9 +2,7 @@ package ru.job4j.io;
 
 import java.io.*;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class ConsoleChat {
 
@@ -20,20 +18,22 @@ public class ConsoleChat {
     }
 
     public void run() {
+        List<String> botAnswers = readPhrases();
         List<String> list = new ArrayList<>();
         Scanner sc = new Scanner(System.in);
         String str = sc.nextLine();
         list.add(str);
         while (!OUT.equals(str)) {
             if (STOP.equals(str)) {
-                if (!CONTINUE.equals(str)) {
+                while (!CONTINUE.equals(str)) {
+                    str = sc.nextLine();
                     list.add(str);
-                    saveLog(list);
                 }
             }
             list.add(str);
-            list.add(readPhrases().stream().findFirst().get());
-            saveLog(list);
+            list.add(readPhrases().get((int) Math.random()));
+            System.out.println(list.add(readPhrases().get((int) Math.random())));
+            System.out.println(list);
         }
     }
 

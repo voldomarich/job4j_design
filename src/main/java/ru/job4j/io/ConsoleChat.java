@@ -20,24 +20,33 @@ public class ConsoleChat {
     }
 
     public void run() {
-        List<String> list = readPhrases();
-        saveLog(list);
+        List<String> list = new ArrayList<>();
+        Scanner sc = new Scanner(System.in);
+        while (!sc.toString().contains(OUT)) {
+            if (sc.toString().contains(STOP)) {
+                while (!sc.toString().contains(CONTINUE)) {
+                    list.add(sc.toString());
+                    saveLog(list);
+                }
+            }
+            list.add(sc.toString());
+            list.add(readPhrases().stream().findFirst().get());
+        }
     }
 
     private List<String> readPhrases() {
         List<String> result = new ArrayList<>();
-        StringBuilder builder = new StringBuilder();
-        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
-            br.lines().map(s -> s + System.lineSeparator()).forEach(builder::append);
+        try (BufferedReader br = new BufferedReader(new FileReader(botAnswers))) {
+            br.lines().forEach(result::add);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        result.add(builder.toString());
         return result;
     }
 
     private void saveLog(List<String> log) {
-        try (PrintWriter pw = new PrintWriter(new FileWriter(botAnswers, Charset.forName("WINDOWS-1251"), true))) {
+        try (PrintWriter pw = new PrintWriter(new FileWriter(path,
+                Charset.forName("WINDOWS-1251"), true))) {
             log.forEach(pw::println);
         } catch (IOException e) {
             e.printStackTrace();

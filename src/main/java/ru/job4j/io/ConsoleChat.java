@@ -22,15 +22,18 @@ public class ConsoleChat {
     public void run() {
         List<String> list = new ArrayList<>();
         Scanner sc = new Scanner(System.in);
-        while (!sc.toString().contains(OUT)) {
-            if (sc.toString().contains(STOP)) {
-                while (!sc.toString().contains(CONTINUE)) {
-                    list.add(sc.toString());
+        String str = sc.nextLine();
+        list.add(str);
+        while (!OUT.equals(str)) {
+            if (STOP.equals(str)) {
+                if (!CONTINUE.equals(str)) {
+                    list.add(str);
                     saveLog(list);
                 }
             }
-            list.add(sc.toString());
+            list.add(str);
             list.add(readPhrases().stream().findFirst().get());
+            saveLog(list);
         }
     }
 

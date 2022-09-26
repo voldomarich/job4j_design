@@ -9,16 +9,16 @@ public class ConsoleChat {
     private static final String OUT = "закончить";
     private static final String STOP = "стоп";
     private static final String CONTINUE = "продолжить";
-    private final String path;
-    private final String botAnswers;
+    private final String archive;
+    private final String botAnswer;
 
-    public ConsoleChat(String path, String botAnswers) {
-        this.path = path;
-        this.botAnswers = botAnswers;
+    public ConsoleChat(String archive, String botAnswer) {
+        this.archive = archive;
+        this.botAnswer = botAnswer;
     }
 
     public void run() {
-        List<String> botAnswers = readPhrases();
+        List<String> bot = readPhrases();
         List<String> list = new ArrayList<>();
         Scanner sc = new Scanner(System.in);
         String str = sc.nextLine();
@@ -30,16 +30,23 @@ public class ConsoleChat {
                     list.add(str);
                 }
             }
+            Random random = new Random();
+            int index = 0;
+            for (int i = random.nextInt(); i < botAnswer.length(); i++) {
+                index = i;
+            }
+            String answer = bot.get(index);
+            list.add(answer);
+            System.out.println(answer);
+            str = sc.nextLine();
             list.add(str);
-            list.add(readPhrases().get((int) Math.random()));
-            System.out.println(list.add(readPhrases().get((int) Math.random())));
-            System.out.println(list);
         }
+        saveLog(list);
     }
 
     private List<String> readPhrases() {
         List<String> result = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(botAnswers))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(botAnswer))) {
             br.lines().forEach(result::add);
         } catch (IOException e) {
             e.printStackTrace();
@@ -48,7 +55,7 @@ public class ConsoleChat {
     }
 
     private void saveLog(List<String> log) {
-        try (PrintWriter pw = new PrintWriter(new FileWriter(path,
+        try (PrintWriter pw = new PrintWriter(new FileWriter(archive,
                 Charset.forName("WINDOWS-1251"), true))) {
             log.forEach(pw::println);
         } catch (IOException e) {
@@ -57,7 +64,7 @@ public class ConsoleChat {
     }
 
     public static void main(String[] args) {
-        ConsoleChat cc = new ConsoleChat("path", "botAnswers");
+        ConsoleChat cc = new ConsoleChat("archive", "botAnswer");
         cc.run();
     }
 }

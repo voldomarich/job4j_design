@@ -31,10 +31,7 @@ public class ConsoleChat {
                 }
             }
             Random random = new Random();
-            int index = 0;
-            for (int i = random.nextInt(); i < botAnswer.length(); i++) {
-                index = i;
-            }
+            int index = random.nextInt(bot.size());
             String answer = bot.get(index);
             list.add(answer);
             System.out.println(answer);

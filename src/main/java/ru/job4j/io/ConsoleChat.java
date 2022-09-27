@@ -1,7 +1,7 @@
 package ru.job4j.io;
 
 import java.io.*;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class ConsoleChat {
@@ -53,7 +53,7 @@ public class ConsoleChat {
 
     private void saveLog(List<String> log) {
         try (PrintWriter pw = new PrintWriter(new FileWriter(archive,
-                Charset.forName("WINDOWS-1251"), true))) {
+                StandardCharsets.UTF_16, true))) {
             log.forEach(pw::println);
         } catch (IOException e) {
             e.printStackTrace();

@@ -27,7 +27,7 @@ public class CSVReader {
         }
     }
 
-    public static boolean validation(String[] args) {
+    private static boolean validation(String[] args) {
         if (args.length != 4) {
             throw new IllegalArgumentException("Root folder is supposed to have four arguments. "
                     + "Usage java -jar search.jar ROOT_FOLDER .JS"

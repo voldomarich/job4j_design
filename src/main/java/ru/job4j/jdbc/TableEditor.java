@@ -1,7 +1,8 @@
 package ru.job4j.jdbc;
 
-import ru.job4j.io.ArgsName;
+import ru.job4j.io.Config;
 
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -15,17 +16,24 @@ public class TableEditor implements AutoCloseable {
 
     private final Properties properties;
 
-    public TableEditor(Properties properties) throws SQLException {
+    public TableEditor(Properties properties) throws Exception {
         this.properties = properties;
         initConnection();
     }
 
-    private void initConnection() throws SQLException {
-        connection = DriverManager.getConnection(properties.getProperty("url"));
+    private void initConnection() throws Exception {
+        Config config = new Config("table.properties");
+        config.load();
+        connection = DriverManager.getConnection(properties.getProperty(config.value("hibernate.url")));
     }
 
     public void createStatement(String tableName) throws Exception {
-        try (Connection connection = DriverManager.getConnection("url", "login", "password")) {
+        Config config = new Config("resources/table.properties");
+        config.load();
+        try (Connection connection =
+                     DriverManager.getConnection(config.value("hibernate.url"),
+                             config.value("hibernate.connection.login"),
+                             config.value("hibernate.connection.password"))) {
             try (Statement statement = connection.createStatement()) {
                 statement.execute(tableName);
             } catch (SQLException e) {
@@ -83,14 +91,19 @@ public class TableEditor implements AutoCloseable {
     }
 
     public static void main(String[] args) throws Exception {
-        try (TableEditor tableEditor = new TableEditor("table.properties")) {
-            tableEditor.createTable("table");
-            tableEditor.addColumn("table", count, type);
-            tableEditor.dropColumn("table", count, type);
-            tableEditor.renameColumn("table", count, type);
-            tableEditor.dropTable("table");
-        } catch (SQLException e) {
-            e.printStackTrace();
+        Properties config = new Properties();
+        try (InputStream in = TableEditor.class.getClassLoader()
+                .getResourceAsStream("resources/table.properties")) {
+            config.load(in);
+            try (TableEditor tableEditor = new TableEditor(config)) {
+                tableEditor.createTable("table");
+                tableEditor.addColumn("table", "count", "type");
+                tableEditor.dropColumn("table", "count");
+                tableEditor.renameColumn("table", "count", "number");
+                tableEditor.dropTable("table");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

@@ -1,5 +1,7 @@
 package ru.job4j.jdbc;
 
+import ru.job4j.io.ArgsName;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -11,68 +13,47 @@ public class TableEditor implements AutoCloseable {
 
     private Connection connection;
 
-    private Properties properties;
+    private final Properties properties;
 
-    public TableEditor(Properties properties) {
+    public TableEditor(Properties properties) throws SQLException {
         this.properties = properties;
         initConnection();
     }
 
-    private void initConnection() {
-        connection = null;
+    private void initConnection() throws SQLException {
+        connection = DriverManager.getConnection(properties.getProperty("url"));
     }
 
-    public void createTable(String tableName) throws Exception {
+    public void createStatement(String tableName) throws Exception {
         try (Connection connection = DriverManager.getConnection("url", "login", "password")) {
             try (Statement statement = connection.createStatement()) {
                 statement.execute(tableName);
-            }
-        }
-    }
-
-    public static void dropTable(String tableName) throws Exception {
-        try (Connection connection = DriverManager.getConnection("url", "login", "password")) {
-            try (Statement statement = connection.createStatement()) {
-                statement.executeUpdate(tableName);
-                System.out.println("Table is deleted");
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void createTable(String tableName) throws Exception {
+        createStatement(tableName);
+        System.out.println("Table is created");
+    }
+
+    public void dropTable(String tableName) throws Exception {
+        createStatement(tableName);
+        System.out.println("Table is deleted");
     }
 
     public void addColumn(String tableName, String columnName, String type) throws Exception {
-        try (Connection connection = DriverManager.getConnection("url", "login", "password")) {
-            try (Statement statement = connection.createStatement()) {
-                int column = statement.executeUpdate("Add FROM tableName WHERE Id = columnName");
-                System.out.printf("%d column(s) added", column);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
+        createStatement("Add FROM tableName WHERE Id = columnName");
     }
 
     public void dropColumn(String tableName, String columnName) throws Exception {
-        try (Connection connection = DriverManager.getConnection("url", "login", "password")) {
-            try (Statement statement = connection.createStatement()) {
-                int column = statement.executeUpdate("DELETE FROM tableName WHERE Id = columnName");
-                System.out.printf("%d column(s) deleted", column);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
+        createStatement("DELETE FROM tableName WHERE Id = columnName");
     }
 
     public void renameColumn(String tableName, String columnName, String newColumnName) throws Exception {
-        try (Connection connection = DriverManager.getConnection("url", "login", "password")) {
-            try (Statement statement = connection.createStatement()) {
-                int column = statement.executeUpdate("UPDATE tableName SET columnName = newColumnName");
-                System.out.printf("%d column(s) renamed", column);
-            } catch (Exception e) {
-                System.out.println("Connection failed...");
-                System.out.println(e);
-            }
-        }
+        createStatement("UPDATE tableName SET columnName = newColumnName");
     }
 
     public static String getTableScheme(Connection connection, String tableName) throws Exception {
@@ -102,6 +83,14 @@ public class TableEditor implements AutoCloseable {
     }
 
     public static void main(String[] args) throws Exception {
-        System.out.println();
+        try (TableEditor tableEditor = new TableEditor("table.properties")) {
+            tableEditor.createTable("table");
+            tableEditor.addColumn("table", count, type);
+            tableEditor.dropColumn("table", count, type);
+            tableEditor.renameColumn("table", count, type);
+            tableEditor.dropTable("table");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

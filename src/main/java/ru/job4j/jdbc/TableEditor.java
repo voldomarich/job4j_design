@@ -28,7 +28,7 @@ public class TableEditor implements AutoCloseable {
     }
 
     public void createStatement(String tableName) throws Exception {
-        Config config = new Config("resources/table.properties");
+        Config config = new Config("table.properties");
         config.load();
         try (Connection connection =
                      DriverManager.getConnection(config.value("hibernate.url"),
@@ -93,7 +93,7 @@ public class TableEditor implements AutoCloseable {
     public static void main(String[] args) throws Exception {
         Properties config = new Properties();
         try (InputStream in = TableEditor.class.getClassLoader()
-                .getResourceAsStream("resources/table.properties")) {
+                .getResourceAsStream("table.properties")) {
             config.load(in);
             try (TableEditor tableEditor = new TableEditor(config)) {
                 tableEditor.createTable("table");

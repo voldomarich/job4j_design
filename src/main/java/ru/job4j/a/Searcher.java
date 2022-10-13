@@ -40,28 +40,43 @@ public class Searcher {
         return fileSearcher.getPaths();
     }
 
-    public static List<Path> searchByName(Path root, Predicate<Path> condition) throws IOException {
+    public static List<Path> searchByPredicate(Path root, Predicate<Path> condition) throws IOException {
         SearchFiles searcher = new SearchFiles(condition);
         Files.walkFileTree(root, searcher);
         return searcher.getPaths();
     }
 
     public static void main(String[] args) throws IOException {
+        
         if (validation(args)) {
+
+            Zip zip = new Zip();
             ArgsName argsName = ArgsName.of(args);
-            Path start = Paths.get(argsName.get("d"));
-            List<Path> result = search(start);
+            Path path = Paths.get(argsName.get("d"));
+
+            List<Path> result = search(path);
+            zip.packFiles(result, new File(argsName.get("o")));
             System.out.println(result);
 
-            if (argsName.get("t").equals("name")) {
+            Predicate<Path> predicateByName = p -> p.toFile().getName().contains(argsName.get("n"));
+            Predicate<Path> predicateByMask = p -> p.toFile().getName().endsWith(argsName.get("n"));
+            Predicate<Path> predicateByRegex = p -> p.toFile().getName().contains("[");
 
-                List<Path> resultByName = searchByName(start,
-                        p -> p.toFile().getName().contains(argsName.get("n")));
+            if (argsName.get("t").equals("name")) {
+                List<Path> resultByName = searchByPredicate(path, predicateByName);
                 System.out.println(resultByName);
+                zip.packFiles(resultByName, new File(argsName.get("o")));
             }
-            File searcherResult = new File(argsName.get("o"));
-            Zip zip = new Zip();
-            zip.packFiles(result, searcherResult);
+            if (argsName.get("t").equals("mask")) {
+                List<Path> resultByMask = searchByPredicate(path, predicateByMask);
+                System.out.println(resultByMask);
+                zip.packFiles(resultByMask, new File(argsName.get("o")));
+            }
+            if (argsName.get("t").equals("regex")) {
+                List<Path> resultByRegex = searchByPredicate(path, predicateByRegex);
+                System.out.println(resultByRegex);
+                zip.packFiles(resultByRegex, new File(argsName.get("o")));
+            }
         }
     }
 }

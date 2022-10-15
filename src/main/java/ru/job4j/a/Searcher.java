@@ -15,19 +15,20 @@ import java.util.function.Predicate;
 public class Searcher {
 
     public static boolean validation(String[] args) {
+        ArgsName argsName = ArgsName.of(args);
         if (args.length != 4) {
             throw new IllegalArgumentException("Root folder has to have two arguments. "
                     + "Usage java -jar search.jar ROOT_FOLDER .JS"
             );
         }
-        File file = new File(args[0]);
+        File file = new File(argsName.get("d"));
         if (!file.exists()) {
             throw new IllegalArgumentException(String.format("Not exist %s", file.getAbsoluteFile()));
         }
         if (!file.isDirectory()) {
             throw new IllegalArgumentException(String.format("Not directory %s", file.getAbsoluteFile()));
         }
-        if (!args[3].endsWith(".txt")) {
+        if (!argsName.get("o").endsWith(".txt")) {
             throw new IllegalArgumentException("Root folder has to have argument of format .txt "
                     + "Searcher java -jar searcher.jar ROOT_FOLDER .txt");
         }
@@ -55,12 +56,16 @@ public class Searcher {
             Path path = Paths.get(argsName.get("d"));
 
             List<Path> result = search(path);
-            zip.packFiles(result, new File(argsName.get("o")));
             System.out.println(result);
+            zip.packFiles(result, new File(argsName.get("o")));
 
             Predicate<Path> predicateByName = p -> p.toFile().getName().contains(argsName.get("n"));
-            Predicate<Path> predicateByMask = p -> p.toFile().getName().endsWith(argsName.get("n"));
-            Predicate<Path> predicateByRegex = p -> p.toFile().getName().contains("[");
+
+            String mask = "^" + argsName.get("n").replace(".", "[.]")
+                    .replace("*", ".*").replace("?", ".") + "$";
+            Predicate<Path> predicateByMask = p -> p.toFile().getName().matches(mask);
+
+            Predicate<Path> predicateByRegex = p -> p.toFile().getName().matches(argsName.get("n"));
 
             if (argsName.get("t").equals("name")) {
                 List<Path> resultByName = searchByPredicate(path, predicateByName);

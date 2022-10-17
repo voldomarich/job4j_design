@@ -35,12 +35,6 @@ public class Searcher {
         return true;
     }
 
-    public static List<Path> search(Path root) throws IOException {
-        FileSearcher fileSearcher = new FileSearcher();
-        Files.walkFileTree(root, fileSearcher);
-        return fileSearcher.getPaths();
-    }
-
     public static List<Path> searchByPredicate(Path root, Predicate<Path> condition) throws IOException {
         SearchFiles searcher = new SearchFiles(condition);
         Files.walkFileTree(root, searcher);
@@ -59,11 +53,6 @@ public class Searcher {
                     .replace("*", ".*").replace("?", ".") + "$";
             Predicate<Path> predicateByMask = p -> p.toFile().getName().matches(mask);
 
-            if (argsName.get("t").equals("")) {
-                List<Path> result = search(Paths.get(argsName.get("d")));
-                System.out.println(result);
-                zip.packFiles(result, new File(argsName.get("o")));
-            }
             if (argsName.get("t").equals("name")) {
                 List<Path> resultByName = searchByPredicate(Paths.get(argsName.get("d")), predicateByName);
                 System.out.println(resultByName);

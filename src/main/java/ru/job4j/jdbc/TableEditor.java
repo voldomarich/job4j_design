@@ -1,7 +1,5 @@
 package ru.job4j.jdbc;
 
-import ru.job4j.io.Config;
-
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -22,23 +20,16 @@ public class TableEditor implements AutoCloseable {
     }
 
     private void initConnection() throws Exception {
-        Config config = new Config("table.properties");
-        config.load();
-        connection = DriverManager.getConnection(properties.getProperty(config.value("hibernate.url")));
+        connection = DriverManager.getConnection(properties.getProperty("hibernate.url"),
+                properties.getProperty("hibernate.connection.login"),
+                properties.getProperty("hibernate.connection.password"));
     }
 
     public void createStatement(String tableName) throws Exception {
-        Config config = new Config("table.properties");
-        config.load();
-        try (Connection connection =
-                     DriverManager.getConnection(config.value("hibernate.url"),
-                             config.value("hibernate.connection.login"),
-                             config.value("hibernate.connection.password"))) {
-            try (Statement statement = connection.createStatement()) {
-                statement.execute(tableName);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+        try (Statement statement = connection.createStatement()) {
+            statement.execute(tableName);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -91,12 +82,11 @@ public class TableEditor implements AutoCloseable {
     }
 
     public static void main(String[] args) throws Exception {
-        Properties config = new Properties();
+        Properties properties = new Properties();
         try (InputStream in = TableEditor.class.getClassLoader()
                 .getResourceAsStream("table.properties")) {
-            config.load(in);
-            try (TableEditor tableEditor = new TableEditor(config)) {
-                tableEditor.createTable("table");
+            try (TableEditor tableEditor = new TableEditor(properties)) {
+                tableEditor.createTable(String.format("%s", properties.getProperty("hibernate.url")));
                 tableEditor.addColumn("table", "count", "type");
                 tableEditor.dropColumn("table", "count");
                 tableEditor.renameColumn("table", "count", "number");

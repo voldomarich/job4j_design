@@ -34,7 +34,7 @@ public class CSVReader {
                     + "Usage java -jar search.jar ROOT_FOLDER .JS"
             );
         }
-        if (!argsName.endsWith(".csv")) {
+        if (!argsName.get("path").endsWith(".csv")) {
             throw new IllegalArgumentException("Root folder is supposed to have argument of format .csv "
                     + "Usage java -jar search.jar ROOT_FOLDER .JS");
         }

@@ -4,7 +4,6 @@ import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Properties;
 import java.util.StringJoiner;
 
@@ -25,34 +24,38 @@ public class TableEditor implements AutoCloseable {
                 properties.getProperty("hibernate.connection.password"));
     }
 
-    public void createStatement(String tableName) throws Exception {
-        try (Statement statement = connection.createStatement()) {
-            statement.execute(tableName);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
     public void createTable(String tableName) throws Exception {
-        createStatement(tableName);
-        System.out.println("Table is created");
+        String sql = """
+                CREATE TABLE Student  \s
+                ( \s
+                Roll_No. Int ,   \s
+                First_Name Varchar (20) ,   \s
+                Last_Name Varchar (20) ,   \s
+                Age Int , \s
+                Marks Int ,  \s
+                )""";
+        System.out.println(sql);
     }
 
     public void dropTable(String tableName) throws Exception {
-        createStatement(tableName);
-        System.out.println("Table is deleted");
+        String sql = String.format(
+                "DROP table %s NULL;", tableName);
+        System.out.println(sql);
     }
 
-    public void addColumn(String tableName, String columnName, String type) throws Exception {
-        createStatement("Add FROM tableName WHERE Id = columnName");
+    public void addColumn(String tableName, String columnName, String type, Connection conn) throws Exception {
+        String sql = String.format(
+                "ALTER table %s ADD %s %s NULL;", tableName, columnName, type);
     }
 
     public void dropColumn(String tableName, String columnName) throws Exception {
-        createStatement("DELETE FROM tableName WHERE Id = columnName");
+        String sql = String.format(
+                "ALTER table %s, %s NULL;", tableName, columnName);
     }
 
     public void renameColumn(String tableName, String columnName, String newColumnName) throws Exception {
-        createStatement("UPDATE tableName SET columnName = newColumnName");
+        String sql = String.format(
+                "ALTER table %s, %s, %s NULL;", tableName, columnName, newColumnName);
     }
 
     public static String getTableScheme(Connection connection, String tableName) throws Exception {
@@ -87,7 +90,7 @@ public class TableEditor implements AutoCloseable {
                 .getResourceAsStream("table.properties")) {
             try (TableEditor tableEditor = new TableEditor(properties)) {
                 tableEditor.createTable(String.format("%s", properties.getProperty("hibernate.url")));
-                tableEditor.addColumn("table", "count", "type");
+                tableEditor.addColumn(properties.getProperty("hibernate.url"), "count");
                 tableEditor.dropColumn("table", "count");
                 tableEditor.renameColumn("table", "count", "number");
                 tableEditor.dropTable("table");

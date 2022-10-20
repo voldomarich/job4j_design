@@ -28,12 +28,13 @@ public class CSVReader {
     }
 
     private static boolean validation(String[] args) {
+        ArgsName argsName = ArgsName.of(args);
         if (args.length != 4) {
             throw new IllegalArgumentException("Root folder is supposed to have four arguments. "
                     + "Usage java -jar search.jar ROOT_FOLDER .JS"
             );
         }
-        if (!args[0].endsWith(".csv")) {
+        if (!argsName.endsWith(".csv")) {
             throw new IllegalArgumentException("Root folder is supposed to have argument of format .csv "
                     + "Usage java -jar search.jar ROOT_FOLDER .JS");
         }
@@ -41,12 +42,12 @@ public class CSVReader {
     }
 
     public static void main(String[] args) throws Exception {
+        ArgsName argsName = ArgsName.of(args);
         if (args.length == 0) {
             throw new IllegalArgumentException("Корневая папка пуста "
                     + "Usage java -jar argsname.jar ROOT_FOLDER"
             );
         }
-        ArgsName argsName = new ArgsName();
         if (validation(args)) {
             handle(argsName);
         }

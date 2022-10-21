@@ -19,43 +19,34 @@ public class TableEditor implements AutoCloseable {
     }
 
     private void initConnection() throws Exception {
-        connection = DriverManager.getConnection(properties.getProperty("hibernate.url"),
+        connection = DriverManager.getConnection(properties.getProperty("hibernate.connection.url"),
                 properties.getProperty("hibernate.connection.login"),
                 properties.getProperty("hibernate.connection.password"));
     }
 
     public void createTable(String tableName) throws Exception {
-        String sql = """
-                CREATE TABLE Student  \s
-                ( \s
-                Roll_No. Int ,   \s
-                First_Name Varchar (20) ,   \s
-                Last_Name Varchar (20) ,   \s
-                Age Int , \s
-                Marks Int ,  \s
-                )""";
-        System.out.println(sql);
+        String sql = String.format("CREATE table %s (id serial primary key);", tableName);
+        System.out.println(getTableScheme(connection, "car"));
     }
 
     public void dropTable(String tableName) throws Exception {
-        String sql = String.format(
-                "DROP table %s NULL;", tableName);
-        System.out.println(sql);
+        String sql = String.format("DROP table %s;", tableName);
+        System.out.println(getTableScheme(connection, "car"));
     }
 
-    public void addColumn(String tableName, String columnName, String type, Connection conn) throws Exception {
-        String sql = String.format(
-                "ALTER table %s ADD %s %s NULL;", tableName, columnName, type);
+    public void addColumn(String tableName, String columnName, String type) throws Exception {
+        String sql = String.format("ALTER table %s ADD %s %s NULL;", tableName, columnName, type);
+        System.out.println(getTableScheme(connection, "car"));
     }
 
     public void dropColumn(String tableName, String columnName) throws Exception {
-        String sql = String.format(
-                "ALTER table %s, %s NULL;", tableName, columnName);
+        String sql = String.format("ALTER table %s DROP COLUMN %s;", tableName, columnName);
+        System.out.println(getTableScheme(connection, "car"));
     }
 
     public void renameColumn(String tableName, String columnName, String newColumnName) throws Exception {
-        String sql = String.format(
-                "ALTER table %s, %s, %s NULL;", tableName, columnName, newColumnName);
+        String sql = String.format("ALTER table %s RENAME COLUMN %s TO %s;", tableName, columnName, newColumnName);
+        System.out.println(getTableScheme(connection, "car"));
     }
 
     public static String getTableScheme(Connection connection, String tableName) throws Exception {
@@ -88,15 +79,19 @@ public class TableEditor implements AutoCloseable {
         Properties properties = new Properties();
         try (InputStream in = TableEditor.class.getClassLoader()
                 .getResourceAsStream("table.properties")) {
+            properties.load(in);
             try (TableEditor tableEditor = new TableEditor(properties)) {
-                tableEditor.createTable(String.format("%s", properties.getProperty("hibernate.url")));
-                tableEditor.addColumn(properties.getProperty("hibernate.url"), "count");
-                tableEditor.dropColumn("table", "count");
-                tableEditor.renameColumn("table", "count", "number");
-                tableEditor.dropTable("table");
+                tableEditor.createTable("car");
+                tableEditor.addColumn("car", "engine", "text");
+                tableEditor.addColumn("car", "bodies", "text");
+                tableEditor.addColumn("car", "transmission", "text");
+                tableEditor.dropColumn("car", "transmission");
+                tableEditor.renameColumn("car", "bodies", "body");
+                tableEditor.dropTable("car");
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+
         }
     }
 }

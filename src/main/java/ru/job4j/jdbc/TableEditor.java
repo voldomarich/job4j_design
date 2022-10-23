@@ -25,9 +25,12 @@ public class TableEditor implements AutoCloseable {
                 properties.getProperty("hibernate.connection.password"));
     }
 
-    private void getStatement(String query) {
+    private void getStatement(String query, String tableName) {
         try (Statement statement = connection.createStatement()) {
             statement.executeUpdate(query);
+            if (!query.startsWith("drop")) {
+                System.out.println(getTableScheme(tableName));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -35,32 +38,28 @@ public class TableEditor implements AutoCloseable {
 
     public void createTable(String tableName) throws Exception {
         String sql = String.format("CREATE table %s (id serial primary key);", tableName);
-        getStatement(sql);
-        System.out.println(getTableScheme(tableName));
+        getStatement(sql, tableName);
     }
 
     public void dropTable(String tableName) throws Exception {
         String sql = String.format("DROP table %s;", tableName);
-        getStatement(sql);
+        getStatement(sql, tableName);
     }
 
     public void addColumn(String tableName, String columnName, String type) throws Exception {
         String sql = String.format("ALTER table %s ADD %s %s NULL;", tableName, columnName, type);
-        getStatement(sql);
-        System.out.println(getTableScheme(tableName));
+        getStatement(sql, tableName);
     }
 
     public void dropColumn(String tableName, String columnName) throws Exception {
         String sql = String.format("ALTER table %s DROP COLUMN %s;", tableName, columnName);
-        getStatement(sql);
-        System.out.println(getTableScheme(tableName));
+        getStatement(sql, tableName);
     }
 
     public void renameColumn(String tableName, String columnName, String newColumnName) throws Exception {
         String sql = String.format("ALTER table %s RENAME COLUMN %s TO %s;",
                 tableName, columnName, newColumnName);
-        getStatement(sql);
-        System.out.println(getTableScheme(tableName));
+        getStatement(sql, tableName);
     }
 
     public String getTableScheme(String tableName) throws Exception {
@@ -95,12 +94,12 @@ public class TableEditor implements AutoCloseable {
                 .getResourceAsStream("table.properties")) {
             properties.load(in);
             try (TableEditor tableEditor = new TableEditor(properties)) {
-                tableEditor.createTable("cars");
-                tableEditor.addColumn("cars", "engine", "text");
-                tableEditor.addColumn("cars", "bodies", "text");
-                tableEditor.addColumn("cars", "transmission", "text");
-                tableEditor.dropColumn("cars", "transmission");
-                tableEditor.renameColumn("cars", "bodies", "body");
+                tableEditor.createTable("caars");
+                tableEditor.addColumn("caars", "engine", "text");
+                tableEditor.addColumn("caars", "bodies", "text");
+                tableEditor.addColumn("caars", "transmission", "text");
+                tableEditor.dropColumn("caars", "transmission");
+                tableEditor.renameColumn("caars", "bodies", "body");
             } catch (SQLException e) {
                 e.printStackTrace();
             }

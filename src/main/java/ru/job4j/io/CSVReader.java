@@ -9,36 +9,33 @@ public class CSVReader {
 
     public static void handle(ArgsName argsName) throws Exception {
         List<String> result = new ArrayList<>();
-        String[] names = argsName.get("filter").split(argsName.get("delimiter"));
-        String firstLine = argsName.get("path").split(argsName.get("delimiter"), 3)[0];
-        String[] columns = firstLine.split(argsName.get("delimiter"));
-        int[] indexes = new int[names.length];
-        int count = 0;
-        for (String name : names) {
-            for (int j = 0; j < columns.length; j++) {
-                if (name.equals(columns[j])) {
-                    indexes[count++] = j;
-                }
-            }
-        }
+        String[] names = argsName.get("filter").split(",");
         try (BufferedReader in = new BufferedReader(new FileReader(argsName.get("path")))) {
-            for (int i = 0; i < indexes.length; i++) {
-                String[] rsl = (String[]) in.lines().toArray();
-            }
-                try (PrintWriter out = new PrintWriter(
-                        new BufferedOutputStream(
-                                new FileOutputStream(argsName.get("out"))
-                        ))) {
-                    result.forEach(out::println);
-                    var scanner = new Scanner(new ByteArrayInputStream(argsName.get("filter").getBytes()))
-                            .useDelimiter(argsName.get("delimiter"));
-                    System.out.println(out);
-                    System.out.println(scanner);
-                } catch (Exception e) {
-                    e.printStackTrace();
+            String firstLine = in.readLine().split(argsName.get("delimiter"), 3)[0];
+            String[] columns = firstLine.split(argsName.get("delimiter"));
+            int[] indexes = new int[names.length];
+            int count = 0;
+            for (String name : names) {
+                for (int j = 0; j < columns.length; j++) {
+                    if (name.equals(columns[j])) {
+                        indexes[count++] = j;
+                    }
                 }
             }
         }
+        try (PrintWriter out = new PrintWriter(
+                new BufferedOutputStream(
+                        new FileOutputStream(argsName.get("out"))
+                ))) {
+            result.forEach(out::println);
+            var scanner = new Scanner(new ByteArrayInputStream(argsName.get("filter").getBytes()))
+                    .useDelimiter(argsName.get("delimiter"));
+            System.out.println(out);
+            System.out.println(scanner);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     private static boolean validation(String[] args) {
         ArgsName argsName = ArgsName.of(args);

@@ -11,8 +11,8 @@ public class CSVReader {
         List<String> result = new ArrayList<>();
         String[] names = argsName.get("filter").split(",");
         try (BufferedReader in = new BufferedReader(new FileReader(argsName.get("path")))) {
-            String firstLine = in.readLine().split(argsName.get("delimiter"), 3)[0];
-            String[] columns = firstLine.split(argsName.get("delimiter"));
+            String line = in.readLine();
+            String[] columns = line.split(argsName.get("delimiter"));
             int[] indexes = new int[names.length];
             int count = 0;
             for (String name : names) {
@@ -20,6 +20,7 @@ public class CSVReader {
                     if (name.equals(columns[j])) {
                         indexes[count++] = j;
                     }
+                    line = in.readLine();
                 }
             }
         }

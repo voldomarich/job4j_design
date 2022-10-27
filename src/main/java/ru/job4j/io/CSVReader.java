@@ -3,11 +3,12 @@ package ru.job4j.io;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class CSVReader {
+
     public static void handle(ArgsName argsName) throws Exception {
         List<String> result = new ArrayList<>();
+        StringBuilder rsl = new StringBuilder();
         String[] names = argsName.get("filter").split(",");
         try (BufferedReader in = new BufferedReader(new FileReader(argsName.get("path")))) {
             String line = in.readLine();
@@ -15,12 +16,20 @@ public class CSVReader {
             int[] indexes = new int[names.length];
             int count = 0;
             for (String name : names) {
-                for (int j = 0; j < columns.length; j++) {
-                    if (name.equals(columns[j])) {
-                        indexes[count++] = j;
+                for (int i = 0; i < columns.length; i++) {
+                    if (name.equals(columns[i])) {
+                        indexes[count++] = i;
                     }
-                    line = in.readLine();
                 }
+            }
+            while (in.ready()) {
+                line = in.readLine();
+                String[] str = line.split(argsName.get("delimiter"));
+                rsl.append(argsName.get("filter")).append(argsName.get("delimiter"));
+                for (int index : indexes) {
+                    rsl.append(str[index]).append(argsName.get("delimiter"));
+                }
+                result.add(rsl.toString());
             }
         }
         try (PrintWriter out = new PrintWriter(
@@ -28,10 +37,6 @@ public class CSVReader {
                         new FileOutputStream(argsName.get("out"))
                 ))) {
             result.forEach(out::println);
-            var scanner = new Scanner(new ByteArrayInputStream(argsName.get("filter").getBytes()))
-                    .useDelimiter(argsName.get("delimiter"));
-            System.out.println(out);
-            System.out.println(scanner);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -47,6 +52,9 @@ public class CSVReader {
         if (!argsName.get("path").endsWith(".csv")) {
             throw new IllegalArgumentException("Root folder is supposed to have argument of format .csv "
                     + "Usage java -jar search.jar ROOT_FOLDER .JS");
+        }
+        if (argsName.get("filter").contains("")) {
+            throw new IllegalArgumentException("Ключ параметра filter не содержит значения");
         }
         return true;
     }

@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Scanner;
 
 public class CSVReader {
-
     public static void handle(ArgsName argsName) throws Exception {
         List<String> result = new ArrayList<>();
         String[] names = argsName.get("filter").split(",");

@@ -80,8 +80,26 @@ class CSVReaderTest {
                 "-out=" + target.getAbsolutePath(), "-filter="
         });
         Files.writeString(file.toPath(), data);
-        assertThatThrownBy(CSVReader::handle)
+        assertThatThrownBy(() -> CSVReader.handle(argsName))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("не содержит значения");
+                .hasMessageContaining("Входной параметр не содержит значения");
+    }
+
+    @Test
+    void whenArgsHasNoValues(@TempDir Path folder) throws Exception {
+        String data = String.join(
+                System.lineSeparator(),
+                "name;age;last_name;education",
+                "Tom;20;Smith;Bachelor",
+                "Jack;25;Johnson;Undergraduate",
+                "William;30;Brown;Secondary special"
+        );
+        File file = folder.resolve("source.csv").toFile();
+        File target = folder.resolve("target.csv").toFile();
+        ArgsName argsName = ArgsName.of(new String[]{});
+        Files.writeString(file.toPath(), data);
+        assertThatThrownBy(() -> CSVReader.handle(argsName))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Корневая папка пуста");
     }
 }

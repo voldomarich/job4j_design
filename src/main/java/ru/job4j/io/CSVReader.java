@@ -53,9 +53,6 @@ public class CSVReader {
             throw new IllegalArgumentException("Root folder is supposed to have argument of format .csv "
                     + "Usage java -jar search.jar ROOT_FOLDER .JS");
         }
-        if (argsName.get("filter").contains("")) {
-            throw new IllegalArgumentException("Ключ параметра filter не содержит значения");
-        }
         return true;
     }
 

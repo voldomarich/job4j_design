@@ -6,42 +6,44 @@ import java.util.List;
 
 public class CSVReader {
 
-    public static void handle(String[] args, ArgsName argsName) throws Exception {
-        validation(args);
-        List<String> result = new ArrayList<>();
-        result.add(argsName.get("filter").replace(",", ";"));
-        StringBuilder rsl = new StringBuilder();
-        String[] names = argsName.get("filter").split(",");
-        try (BufferedReader in = new BufferedReader(new FileReader(argsName.get("path")))) {
-            String line = in.readLine();
-            String[] columns = line.split(argsName.get("delimiter"));
-            int[] indexes = new int[names.length];
-            int count = 0;
-            for (String name : names) {
-                for (int i = 0; i < columns.length; i++) {
-                    if (name.equals(columns[i])) {
-                        indexes[count++] = i;
+    public static void handle(String[] args) throws Exception {
+        if (validation(args)) {
+            ArgsName argsName = ArgsName.of(args);
+            List<String> result = new ArrayList<>();
+            result.add(argsName.get("filter").replace(",", ";"));
+            StringBuilder rsl = new StringBuilder();
+            String[] names = argsName.get("filter").split(",");
+            try (BufferedReader in = new BufferedReader(new FileReader(argsName.get("path")))) {
+                String line = in.readLine();
+                String[] columns = line.split(argsName.get("delimiter"));
+                int[] indexes = new int[names.length];
+                int count = 0;
+                for (String name : names) {
+                    for (int i = 0; i < columns.length; i++) {
+                        if (name.equals(columns[i])) {
+                            indexes[count++] = i;
+                        }
                     }
                 }
-            }
-            while (in.ready()) {
-                line = in.readLine();
-                String[] str = line.split(argsName.get("delimiter"));
-                for (int index : indexes) {
-                    rsl.append(str[index]).append(argsName.get("delimiter"));
+                while (in.ready()) {
+                    line = in.readLine();
+                    String[] str = line.split(argsName.get("delimiter"));
+                    for (int index : indexes) {
+                        rsl.append(str[index]).append(argsName.get("delimiter"));
+                    }
+                    rsl.deleteCharAt(rsl.length() - 1);
+                    result.add(rsl.toString());
+                    rsl.delete(0, rsl.length());
                 }
-                rsl.deleteCharAt(rsl.length() - 1);
-                result.add(rsl.toString());
-                rsl.delete(0, rsl.length());
             }
-        }
-        try (PrintWriter out = new PrintWriter(
-                new BufferedOutputStream(
-                        new FileOutputStream(argsName.get("out"))
-                ))) {
-            result.forEach(out::println);
-        } catch (Exception e) {
-            e.printStackTrace();
+            try (PrintWriter out = new PrintWriter(
+                    new BufferedOutputStream(
+                            new FileOutputStream(argsName.get("out"))
+                    ))) {
+                result.forEach(out::println);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -66,7 +68,6 @@ public class CSVReader {
 
 
     public static void main(String[] args) throws Exception {
-        ArgsName argsName = ArgsName.of(args);
-        handle(args, argsName);
+        handle(args);
     }
 }

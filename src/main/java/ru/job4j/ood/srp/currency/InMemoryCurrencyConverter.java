@@ -3,7 +3,6 @@ package ru.job4j.ood.srp.currency;
 import ru.job4j.ood.srp.currency.Currency;
 
 public class InMemoryCurrencyConverter implements CurrencyConverter {
-
     private static final int CURRENCIES_COUNT = Currency.values().length;
     private final double[][] conversationTable = new double[CURRENCIES_COUNT][CURRENCIES_COUNT];
 

@@ -14,7 +14,6 @@ import java.util.Comparator;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class ReportEngineTest {
-
     @Test
     public void whenOldGenerated() {
         MemStore store = new MemStore();

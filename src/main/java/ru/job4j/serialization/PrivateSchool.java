@@ -1,4 +1,4 @@
-package ru.job4j.serialization.java;
+package ru.job4j.serialization;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;

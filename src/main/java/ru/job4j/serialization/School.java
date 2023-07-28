@@ -1,4 +1,4 @@
-package ru.job4j.serialization.java;
+package ru.job4j.serialization;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

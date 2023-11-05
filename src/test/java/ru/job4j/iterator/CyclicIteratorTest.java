@@ -8,7 +8,6 @@ import java.util.NoSuchElementException;
 import static org.assertj.core.api.Assertions.*;
 
 class CyclicIteratorTest {
-
     @Test
     void whenEmptyThenHasNextIsFalse() {
         CyclicIterator<Integer> iterator = new CyclicIterator<>(List.of());

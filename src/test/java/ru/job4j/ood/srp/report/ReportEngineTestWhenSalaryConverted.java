@@ -1,5 +1,6 @@
 package ru.job4j.ood.srp.report;
 
+import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 import ru.job4j.ood.srp.currency.Currency;
 import ru.job4j.ood.srp.currency.InMemoryCurrencyConverter;
@@ -25,7 +26,7 @@ class ReportEngineWhenSalaryConvertedTest {
         store.add(worker);
         store.add(worker2);
         store.add(worker3);
-        Report engine = new ReportEngine(store, parser);
+        Report engine = new ReportEngineWhenSalaryConverted(store, parser);
         StringBuilder expect = new StringBuilder()
                 .append("Name; Hired; Fired; SalaryRub; SalaryUsd;")
                 .append(System.lineSeparator())

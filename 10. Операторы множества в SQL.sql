@@ -24,8 +24,7 @@ VALUES ('Гарри Поттер и узник Азкабана', 'Джоан Р
        ('1984', 'Джордж Оруэлл'),
        ('Марсианин', 'Энди Уир'),
        ('Божественная комедия', 'Данте Алигьери');
-	   
-	   
+
 SELECT name FROM movie m
 INNER JOIN book b ON m.name = b.title;
 
@@ -45,5 +44,10 @@ SELECT name
 FROM movie
 EXCEPT
 SELECT title
-FROM book;
-
+FROM book
+UNION ALL
+(SELECT title
+FROM book
+EXCEPT
+SELECT name
+FROM movie);

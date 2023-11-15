@@ -23,7 +23,7 @@ class ReportEngineTestCSV {
         Employee worker = new Employee("Ivan", dateHired, dateFired, 45000);
         DateTimeParser<Calendar> parser = new ReportDateTimeParser();
         store.add(worker);
-        Report engine = new ReportEngine(store, parser);
+        Report engine = new ReportEngineCSV(store, parser);
         String expect = String.join(
                 "Name; Hired; Fired; Salary;",
                 System.lineSeparator(),

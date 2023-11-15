@@ -2,8 +2,8 @@ package ru.job4j.ood.srp.currency;
 
 public class InMemoryCurrencyConverter implements CurrencyConverter {
 
-    private final int CURRENCIES_COUNT = Currency.values().length;
-    private final double[][] conversationTable = new double[CURRENCIES_COUNT][CURRENCIES_COUNT];
+    private final int currencies = Currency.values().length;
+    private final double[][] conversationTable = new double[currencies][currencies];
 
     public InMemoryCurrencyConverter() {
         this.conversationTable[Currency.RUB.ordinal()][Currency.USD.ordinal()] = 0.011;

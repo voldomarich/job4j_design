@@ -26,11 +26,12 @@ public class ReportEngineWhenSalaryConverted implements Report {
         text.append("Name; Hired; Fired; Salary;")
                 .append(System.lineSeparator());
         for (Employee employee : store.findBy(filter)) {
+            double salary = new InMemoryCurrencyConverter().convert(Currency.RUB, employee.getSalary(), Currency.USD);
             text.append(employee.getName()).append(";")
                     .append(DATE_FORMAT.format(employee.getHired().getTime())).append(";")
                     .append(DATE_FORMAT.format(employee.getFired().getTime())).append(";")
                     .append(employee.getSalary()).append(";")
-                    .append(InMemoryCurrencyConverter.convert(Currency.RUB, employee.getSalary(), Currency.USD))
+                    .append(salary).append(";")
                     .append(System.lineSeparator());
         }
         return text.toString();

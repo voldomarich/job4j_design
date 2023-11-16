@@ -23,7 +23,7 @@ class ReportEngineForHRTest {
         store.add(worker);
         store.add(worker2);
         store.add(worker3);
-        Report engine = new ReportEngineWhenSalaryConverted(store, parser);
+        Report engine = new ReportEngineForHR(store);
         StringBuilder expect = new StringBuilder()
                 .append("Name; Salary;")
                 .append(System.lineSeparator())

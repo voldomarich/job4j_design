@@ -4,10 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -24,8 +21,8 @@ public class ImportDB {
 
     public List<User> load() throws IOException {
         List<User> users = new ArrayList<>();
-        String[] strings = dump.split(";", 2);
         try (BufferedReader rd = new BufferedReader(new FileReader(dump))) {
+            String[] strings = rd.readLine().split(";");
             if (strings.length != 2) {
                 throw new IllegalArgumentException("Входных параметра должно быть два");
             }
@@ -35,10 +32,8 @@ public class ImportDB {
             if (strings[1].isEmpty()) {
                 throw new IllegalArgumentException("Электронная почта пользователя отсутствует");
             }
-            for (User user : users) {
-                user.name = strings[0];
-                user.email = strings[1];
-            }
+            User user = new User(rd.readLine().split(";")[0], rd.readLine().split(";")[1]);
+            users.add(user);
         }
         return users;
     }
@@ -51,7 +46,7 @@ public class ImportDB {
                 cfg.getProperty("jdbc.password")
         )) {
             for (User user : users) {
-                try (PreparedStatement ps = cnt.prepareStatement("INSERT INTO users ...")) {
+                try (PreparedStatement ps = cnt.prepareStatement("INSERT INTO users(name, email) VALUES (?, ?)")) {
                     ps.setString(1, user.name);
                     ps.setString(2, user.email);
                     ps.execute();

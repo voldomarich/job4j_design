@@ -16,21 +16,25 @@ class ReportEngineTestCSV {
     @Test
     public void whenFormatCSV() {
         MemStore store = new MemStore();
-        Calendar dateHired = Calendar.getInstance();
-        dateHired.set(2019, Calendar.FEBRUARY, 26);
-        Calendar dateFired = Calendar.getInstance();
-        dateFired.set(2022, Calendar.FEBRUARY, 28);
-        Employee worker = new Employee("Ivan", dateHired, dateFired, 45000);
+        Calendar now = Calendar.getInstance();
+        Employee worker = new Employee("Ivan", now, now, 10000);
+        Employee worker2 = new Employee("Ilia", now, now, 250000);
+        Employee worker3 = new Employee("Ildus", now, now, 14000);
         DateTimeParser<Calendar> parser = new ReportDateTimeParser();
         store.add(worker);
-        Report engine = new ReportEngineCSV(store, parser);
-        String expect = String.join(
-                "Name; Hired; Fired; Salary;",
-                System.lineSeparator(),
-                worker.getName(),
-                parser.parse(worker.getHired()),
-                parser.parse(worker.getFired()),
-                System.lineSeparator());
-        assertThat(engine.generate(em -> true)).isEqualTo(expect);
+        store.add(worker2);
+        store.add(worker3);
+        Report engine = new ReportEngineCSV(store);
+        StringBuilder expect = new StringBuilder()
+                .append("Name, Hired, Fired, Salary,")
+                .append(System.lineSeparator());
+        for (Employee employee : store.findAll()) {
+            expect.append(employee.getName()).append(", ")
+                    .append(parser.parse(employee.getHired())).append(", ")
+                    .append(parser.parse(employee.getFired())).append(", ")
+                    .append(employee.getSalary()).append(", ")
+                    .append(System.lineSeparator());
+        }
+        assertThat(engine.generate(em -> true)).isEqualTo(expect.toString());
     }
 }

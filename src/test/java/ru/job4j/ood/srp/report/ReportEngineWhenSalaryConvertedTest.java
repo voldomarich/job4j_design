@@ -25,20 +25,20 @@ class ReportEngineWhenSalaryConvertedTest {
         store.add(worker);
         store.add(worker2);
         store.add(worker3);
-        Report engine = new ReportEngineWhenSalaryConverted(store, parser);
+        Report engine = new ReportEngineWhenSalaryConverted(store);
         double salary;
+        StringBuilder expect = new StringBuilder()
+                .append("Name, Hired, Fired, SalaryRUB, SalaryUSD,")
+                .append(System.lineSeparator());
         for (Employee employee : store.findAll()) {
             salary = new InMemoryCurrencyConverter().convert(Currency.RUB, employee.getSalary(), Currency.USD);
-            StringBuilder expect = new StringBuilder()
-                    .append("Name; Hired; Fired; SalaryRub; SalaryUsd;")
-                    .append(System.lineSeparator())
-                    .append(employee.getName()).append(" ")
+            expect.append(employee.getName()).append(" ")
                     .append(parser.parse(employee.getHired())).append(" ")
                     .append(parser.parse(employee.getFired())).append(" ")
                     .append(employee.getSalary()).append(" ")
-                    .append(salary)
+                    .append(salary).append(" ")
                     .append(System.lineSeparator());
-            assertThat(engine.generate(em -> true)).isEqualTo(expect.toString());
         }
+        assertThat(engine.generate(em -> true)).isEqualTo(expect.toString());
     }
 }

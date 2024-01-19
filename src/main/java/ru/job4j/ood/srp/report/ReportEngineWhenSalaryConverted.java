@@ -16,22 +16,22 @@ public class ReportEngineWhenSalaryConverted implements Report {
 
     private final Store store;
 
-    public ReportEngineWhenSalaryConverted(Store store, DateTimeParser<Calendar> parser) {
+    public ReportEngineWhenSalaryConverted(Store store) {
         this.store = store;
     }
 
     @Override
     public String generate(Predicate<Employee> filter) {
         StringBuilder text = new StringBuilder();
-        text.append("Name; Hired; Fired; Salary;")
+        text.append("Name, Hired, Fired, SalaryRUB, SalaryUSD,")
                 .append(System.lineSeparator());
-        for (Employee employee : store.findBy(filter)) {
+        for (Employee employee : store.findAll()) {
             double salary = new InMemoryCurrencyConverter().convert(Currency.RUB, employee.getSalary(), Currency.USD);
-            text.append(employee.getName()).append(";")
-                    .append(DATE_FORMAT.format(employee.getHired().getTime())).append(";")
-                    .append(DATE_FORMAT.format(employee.getFired().getTime())).append(";")
-                    .append(employee.getSalary()).append(";")
-                    .append(salary).append(";")
+            text.append(employee.getName()).append(" ")
+                    .append(DATE_FORMAT.format(employee.getHired().getTime())).append(" ")
+                    .append(DATE_FORMAT.format(employee.getFired().getTime())).append(" ")
+                    .append(employee.getSalary()).append(" ")
+                    .append(salary).append(" ")
                     .append(System.lineSeparator());
         }
         return text.toString();

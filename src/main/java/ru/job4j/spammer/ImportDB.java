@@ -11,26 +11,28 @@ import java.util.Properties;
 
 public class ImportDB {
 
-    private final Properties cfg;
+    private final Properties config;
     private final String dump;
 
-    public ImportDB(Properties cfg, String dump) {
-        this.cfg = cfg;
+    public ImportDB(Properties config, String dump) {
+        this.config = config;
         this.dump = dump;
     }
 
     public List<User> load() throws IOException {
         List<User> users = new ArrayList<>();
         try (BufferedReader rd = new BufferedReader(new FileReader(dump))) {
-            String[] strings = rd.readLine().split(";");
-            if (strings.length != 2) {
-                throw new IllegalArgumentException("Входных параметра должно быть два");
-            }
-            if (strings[0].isEmpty()) {
-                throw new IllegalArgumentException("Имя и фамилия пользователя отсутствуют");
-            }
-            if (strings[1].isEmpty()) {
-                throw new IllegalArgumentException("Электронная почта пользователя отсутствует");
+            for (String string : rd.lines().toList()) {
+                String[] s = string.split(";");
+                if (s.length != 2) {
+                    throw new IllegalArgumentException("Входных параметра должно быть два");
+                }
+                if (string.split(";")[0].isEmpty()) {
+                    throw new IllegalArgumentException("Имя и фамилия пользователя отсутствуют");
+                }
+                if (string.split(";")[1].isEmpty()) {
+                    throw new IllegalArgumentException("Электронная почта пользователя отсутствует");
+                }
             }
             User user = new User(rd.readLine().split(";")[0], rd.readLine().split(";")[1]);
             users.add(user);
@@ -39,17 +41,18 @@ public class ImportDB {
     }
 
     public void save(List<User> users) throws ClassNotFoundException, SQLException {
-        Class.forName(cfg.getProperty("jdbc.driver"));
-        try (Connection cnt = DriverManager.getConnection(
-                cfg.getProperty("jdbc.url"),
-                cfg.getProperty("jdbc.username"),
-                cfg.getProperty("jdbc.password")
+        Class.forName(config.getProperty("jdbc.driver"));
+        try (Connection connection = DriverManager.getConnection(
+                config.getProperty("jdbc.url"),
+                config.getProperty("jdbc.username"),
+                config.getProperty("jdbc.password")
         )) {
             for (User user : users) {
-                try (PreparedStatement ps = cnt.prepareStatement("INSERT INTO users(name, email) VALUES (?, ?)")) {
-                    ps.setString(1, user.name);
-                    ps.setString(2, user.email);
-                    ps.execute();
+                try (PreparedStatement preparedStatement =
+                        connection.prepareStatement("INSERT INTO users(name, email) VALUES (?, ?)")) {
+                    preparedStatement.setString(1, user.name);
+                    preparedStatement.setString(2, user.email);
+                    preparedStatement.execute();
                 }
             }
         }
@@ -66,11 +69,11 @@ public class ImportDB {
     }
 
     public static void main(String[] args) throws Exception {
-        Properties cfg = new Properties();
-        try (InputStream in = ImportDB.class.getClassLoader().getResourceAsStream("app.properties")) {
-            cfg.load(in);
+        Properties config = new Properties();
+        try (InputStream inputStream = ImportDB.class.getClassLoader().getResourceAsStream("app.properties")) {
+            config.load(inputStream);
         }
-        ImportDB db = new ImportDB(cfg, "./dump.txt");
-        db.save(db.load());
+        ImportDB dataBase = new ImportDB(config, "./dump.txt");
+        dataBase.save(dataBase.load());
     }
 }

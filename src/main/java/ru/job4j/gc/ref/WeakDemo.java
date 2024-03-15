@@ -14,7 +14,7 @@ public class WeakDemo {
         //example2Correct();
     }
 
-    // За'null'ение сильной ссылки приводит к удалению объекта и мы его не можем получить по слабой ссылке
+    /* За'null'ение сильной ссылки приводит к удалению объекта и мы его не можем получить по слабой ссылке */
     private static void example1Incorrect() throws InterruptedException {
         Object object = new Object() {
             @Override
@@ -29,9 +29,9 @@ public class WeakDemo {
         System.out.println(weak.get());
     }
 
-    // Получаем из слабой ссылки сильную ссылку на данные,
-    // после чего за'null'яем её и GC не удаляет объект,
-    // мы можем получить его по слабой ссылке
+    /* Получаем из слабой ссылки сильную ссылку на данные,
+       после чего за'null'яем её и GC не удаляет объект,
+       мы можем получить его по слабой ссылке */
     private static void example1Correct() throws InterruptedException {
         Object object = new Object() {
             @Override
@@ -47,7 +47,7 @@ public class WeakDemo {
         System.out.println(weak.get());
     }
 
-    // Cоздаём объекты изначально без сильных ссылок. При вызове сборщика мусора все объекты удаляются
+    /* Cоздаём объекты изначально без сильных ссылок. При вызове сборщика мусора все объекты удаляются */
     private static void example2Incorrect() throws InterruptedException {
         List<WeakReference<Object>> objects = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
@@ -62,8 +62,8 @@ public class WeakDemo {
         TimeUnit.SECONDS.sleep(3);
     }
 
-    // Сoздаём объект с сильной ссылкой, создаём слабую ссылку на него. После чего добавляем в коллекцию
-    // слабую ссылку на объект, и GC не затрёт наши объекты
+    /* Сoздаём объект с сильной ссылкой, создаём слабую ссылку на него. После чего добавляем в коллекцию
+       слабую ссылку на объект, и GC не затрёт наши объекты */
     private static void example2Correct() throws InterruptedException {
         List<WeakReference<Object>> objects = new ArrayList<>();
         Object object = new Object() {

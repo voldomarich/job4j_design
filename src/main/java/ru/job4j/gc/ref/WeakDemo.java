@@ -8,10 +8,10 @@ import java.util.concurrent.TimeUnit;
 public class WeakDemo {
 
     public static void main(String[] args) throws InterruptedException {
-        //example1Incorrect();
+        /*example1Incorrect();*/
         example1Correct();
-        //example2Incorrect();
-        //example2Correct();
+        /*example2Incorrect();*/
+        /*example2Correct();*/
     }
 
     /* За'null'ение сильной ссылки приводит к удалению объекта и мы его не можем получить по слабой ссылке */

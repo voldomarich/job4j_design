@@ -25,11 +25,10 @@ public class Emulator {
         System.out.println(SET);
         String dir = scanner.nextLine();
         if (!Files.exists(Path.of(dir))) {
-            System.out.println("folder does not exist. Restart again, please.");
+            System.out.println("Folder does not exist. Restart again, please");
         } else {
             DirFileCache textCache = new DirFileCache(dir);
             boolean run = true;
-
             while (run) {
                 System.out.println(MENU);
                 int userChoice = Integer.parseInt(scanner.nextLine());
@@ -38,7 +37,6 @@ public class Emulator {
                     String file = scanner.nextLine();
                     textCache.load(file);
                 }
-
                 if (userChoice == GET_FILE) {
                     System.out.println(GET);
                     String file = scanner.nextLine();
@@ -54,6 +52,7 @@ public class Emulator {
             }
         }
     }
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         start(scanner);

@@ -9,8 +9,12 @@ public abstract class AbstractCache<K, V> {
     private final Map<K, SoftReference<V>> cache = new HashMap<>();
 
     public final void put(K key, V value) {
-        cache.put(key, new SoftReference<V>(value));
-        System.out.println("NEW FILE HAS BEEN ADDED IN CACHE");
+        if (cache.containsKey(key)) {
+            System.out.println("THAT FILE IS ALREADY IN CACHE");
+        } else {
+            cache.putIfAbsent(key, new SoftReference<>(value));
+            System.out.println("NEW FILE HAS BEEN ADDED IN CACHE");
+        }
     }
 
     public final V get(K key) {

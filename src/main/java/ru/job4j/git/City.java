@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.Objects;
 
 public class City {
-
     private String name;
 
     private int age;

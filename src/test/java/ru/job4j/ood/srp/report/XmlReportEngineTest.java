@@ -4,7 +4,6 @@ import ru.job4j.ood.srp.model.Employee;
 import ru.job4j.ood.srp.store.MemStore;
 import org.junit.jupiter.api.Test;
 
-import javax.xml.bind.JAXBException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -12,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class XmlReportEngineTest {
 
     @Test
-    void whenGenerated() throws JAXBException {
+    void whenGenerated() throws Exception {
         MemStore store = new MemStore();
         Employee employee = new Employee("John Doe",
                 new GregorianCalendar(2023, Calendar.JUNE, 8, 17, 41),

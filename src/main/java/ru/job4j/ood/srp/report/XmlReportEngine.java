@@ -1,33 +1,35 @@
 package ru.job4j.ood.srp.report;
 
 import ru.job4j.ood.srp.model.Employee;
+import ru.job4j.ood.srp.store.MemStore;
 import ru.job4j.ood.srp.store.Store;
 
-import java.text.SimpleDateFormat;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+import java.io.StringWriter;
 import java.util.function.Predicate;
 
 public class XmlReportEngine implements Report {
 
-    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd:MM:yyyy HH:mm");
-
     private final Store store;
+    private final Marshaller marshaller;
 
-    public XmlReportEngine(Store store) {
+    public XmlReportEngine(Store store) throws Exception {
         this.store = store;
+        JAXBContext context = JAXBContext.newInstance(MemStore.class);
+        this.marshaller = context.createMarshaller();
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
     }
 
     @Override
     public String generate(Predicate<Employee> filter) {
-        StringBuilder text = new StringBuilder();
-        text.append("Name; Hired; Fired; Salary;")
-                .append(System.lineSeparator());
-        for (Employee employee : store.findBy(filter)) {
-            text.append(employee.getName()).append(";")
-                    .append(DATE_FORMAT.format(employee.getHired().getTime())).append(";")
-                    .append(DATE_FORMAT.format(employee.getFired().getTime())).append(";")
-                    .append(employee.getSalary()).append(";")
-                    .append(System.lineSeparator());
+        String xml = "";
+        try (StringWriter writer = new StringWriter()) {
+            marshaller.marshal(new MemStore(store.findBy(filter)), writer);
+            xml = writer.getBuffer().toString();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return text.toString();
+        return xml;
     }
 }

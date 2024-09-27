@@ -4,16 +4,14 @@ import ru.job4j.ood.srp.model.Employee;
 import ru.job4j.ood.srp.store.MemStore;
 import org.junit.jupiter.api.Test;
 
-import javax.xml.bind.JAXBException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 class JsonReportEngineTest {
 
     @Test
-    void whenAccountantsGenerated() throws JAXBException {
+    void whenAccountantsGenerated() {
         MemStore store = new MemStore();
         Employee employee = new Employee("John Doe",
                 new GregorianCalendar(2023, Calendar.JUNE, 8, 17, 41),
@@ -26,7 +24,7 @@ class JsonReportEngineTest {
         store.add(employee);
         store.add(employee1);
         Report engine = new JsonReportEngine(store);
-        String ex = """
+        String expected = """
                 [
                   {
                     "name": "John Doe",
@@ -41,6 +39,6 @@ class JsonReportEngineTest {
                     "salary": 6000.0
                   }
                 ]""";
-        assertThat(engine.generate(em -> true)).isEqualTo(ex);
+        assertThat(engine.generate(em -> true)).isEqualTo(expected);
     }
 }

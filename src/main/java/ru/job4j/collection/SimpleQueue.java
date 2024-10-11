@@ -1,6 +1,6 @@
 package ru.job4j.collection;
 
-public class SimpleQueue<T> {
+public class SimpleQueue<T> implements Queue<T> {
 
     private final SimpleStack<T> in = new SimpleStack<>();
     private final SimpleStack<T> out = new SimpleStack<>();
@@ -23,5 +23,9 @@ public class SimpleQueue<T> {
     public void push(T value) {
         in.push(value);
         countIn++;
+    }
+
+    public int size() {
+        return countIn + countOut;
     }
 }

@@ -28,4 +28,8 @@ public class SimpleQueue<T> implements Queue<T> {
     public int size() {
         return countIn + countOut;
     }
+
+    public boolean isEmpty() {
+        return countOut == 0;
+    }
 }

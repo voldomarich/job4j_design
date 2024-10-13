@@ -66,16 +66,14 @@ public class TreeUtils<T> {
         if (Objects.isNull(root)) {
             throw new IllegalArgumentException("Корень равен null");
         }
-        Queue<Node<T>> queue = new SimpleQueue<>();
-        queue.push(root);
-
-        while (!queue.isEmpty()) {
-            Node<T> currentNode = queue.poll();
-            if (Objects.equals(currentNode.getValue(), parent)) {
-                currentNode.getChildren().add(new Node<>(child));
-                return true;
+        Optional<Node<T>> optionalParent = findByKey(root, parent);
+        Optional<Node<T>> optionalChild = findByKey(root, child);
+        if (optionalParent.isPresent()) {
+            Node<T> node = optionalParent.get();
+            if (optionalChild.isEmpty()) {
+                node.getChildren().add(new Node<>(child));
+                result = true;
             }
-            currentNode.getChildren().forEach(queue::push);
         }
         return result;
     }
@@ -88,6 +86,7 @@ public class TreeUtils<T> {
      * @throws IllegalArgumentException, если root является null
      */
     public Optional<Node<T>> findByKey(Node<T> root, T key) {
+
         Optional<Node<T>> result = Optional.empty();
         if (Objects.isNull(root)) {
             throw new IllegalArgumentException("Корень равен null");
@@ -112,27 +111,21 @@ public class TreeUtils<T> {
      * @param root корень дерева
      * @param key ключ поиска
      * @return узел с ключом key, завернутый в объект типа Optional
-     * @throws IllegalArgumentException если root является null
+     * @throws IllegalArgumentException, если root является null
      */
     public Optional<Node<T>> divideByKey(Node<T> root, T key) {
+
         Optional<Node<T>> result = Optional.empty();
         if (Objects.isNull(root)) {
             throw new IllegalArgumentException("Корень равен null");
         }
-        if (Objects.equals(root.getValue(), key)) {
-            result = Optional.of(root);
+        Optional<Node<T>> optional = findByKey(root, key);
+        if (optional.isPresent()) {
+            Node<T> node = optional.get();
+            root.getChildren().removeIf(e -> Objects.equals(e.getValue(), e));
+            node.getChildren().clear();
+            result = optional;
         }
-        SimpleStack<Node<T>> stack = new SimpleStack<>();
-        stack.push(root);
-        while (!stack.isEmpty()) {
-            Node<T> currentNode = stack.pop();
-            if (Objects.equals(currentNode.getValue(), key)) {
-                result = Optional.of(currentNode);
-                break;
-            }
-            currentNode.getChildren().forEach(stack::push);
-        }
-        result.ifPresent(tNode -> tNode.getChildren().removeIf(child -> Objects.equals(child.getValue(), key)));
         return result;
     }
 }

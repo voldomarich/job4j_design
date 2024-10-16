@@ -115,16 +115,25 @@ public class TreeUtils<T> {
      */
     public Optional<Node<T>> divideByKey(Node<T> root, T key) {
 
-        Optional<Node<T>> result = Optional.empty();
         if (Objects.isNull(root)) {
             throw new IllegalArgumentException("Корень равен null");
         }
-        Optional<Node<T>> optional = findByKey(root, key);
-        if (optional.isPresent()) {
-            Node<T> node = optional.get();
-            root.getChildren().removeIf(e -> Objects.equals(e.getValue(), e));
-            node.getChildren().clear();
-            result = optional;
+        Optional<Node<T>> result = Optional.empty();
+        Iterator<Node<T>> iterator = root.getChildren().iterator();
+
+        while (iterator.hasNext()) {
+            Node<T> child = iterator.next();
+
+            if (Objects.equals(root.getValue(), key)) {
+                iterator.remove();
+                root.getChildren().clear();
+                return Optional.of(child);
+            }
+
+            result = divideByKey(root, key);
+            if (result.isPresent()) {
+                return result;
+            }
         }
         return result;
     }

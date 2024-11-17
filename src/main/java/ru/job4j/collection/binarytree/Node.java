@@ -1,16 +1,16 @@
 package ru.job4j.collection.binarytree;
 
-public class Node implements VisualNode {
+public class Node<T> implements VisualNode {
 
-    private final int key;
+    private T key;
     private Node left;
     private Node right;
 
-    public Node(int key) {
+    public Node(T key) {
         this.key = key;
     }
 
-    public Node(int key, Node left, Node right) {
+    public Node(T key, Node left, Node right) {
         this.key = key;
         this.left = left;
         this.right = right;
@@ -28,6 +28,6 @@ public class Node implements VisualNode {
 
     @Override
     public String getText() {
-        return String.valueOf(key);
+        return key.toString();
     }
 }

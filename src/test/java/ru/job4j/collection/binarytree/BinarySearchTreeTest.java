@@ -146,4 +146,33 @@ class BinarySearchTreeTest {
         assertThrows(NullPointerException.class, () -> tree.contains(null)).getMessage().equals("Ключ не может быть null");
         assertThrows(NullPointerException.class, () -> tree.put(null)).getMessage().equals("Ключ не может быть null");
     }
+
+    @Test
+    void whenRemoveNodeWithOneChildThenTreeUpdates() {
+        BinarySearchTree<Integer> tree = new BinarySearchTree<>();
+        for (int element : new int[]{4, 2, 6, 1, 5}) {
+            tree.put(element);
+        }
+        assertThat(tree.remove(6)).isTrue();
+        assertThat(tree.inSymmetricalOrder()).containsExactly(1, 2, 4, 5);
+    }
+
+    @Test
+    void whenRemoveRootNodeThenTreeUpdates() {
+        BinarySearchTree<Integer> tree = new BinarySearchTree<>();
+        for (int element : new int[]{4, 2, 6, 1, 3, 5, 7}) {
+            tree.put(element);
+        }
+        assertThat(tree.remove(4)).isTrue();
+        assertThat(tree.inSymmetricalOrder()).containsExactly(1, 2, 3, 5, 6, 7);
+    }
+
+    @Test
+    void whenRemoveNonExistentElementThenReturnFalse() {
+        BinarySearchTree<Integer> tree = new BinarySearchTree<>();
+        for (int element : new int[]{4, 2, 6, 1, 3, 5, 7}) {
+            tree.put(element);
+        }
+        assertThat(tree.remove(8)).isFalse();
+    }
 }

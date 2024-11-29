@@ -173,6 +173,22 @@ public class BinarySearchTree<T extends Comparable<T>> {
         return list;
     }
 
+    public void clear() {
+        Node node = root;
+        clear(node);
+        root = null;
+    }
+
+    private void clear(Node first) {
+        if (first != null) {
+            clear(first.left);
+            clear(first.right);
+            first.key = null;
+            first.left = null;
+            first.right = null;
+        }
+    }
+
     public T minimum() {
         if (root == null) {
             throw new NoSuchElementException("Дерево пусто");

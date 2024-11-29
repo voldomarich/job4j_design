@@ -175,4 +175,23 @@ class BinarySearchTreeTest {
         }
         assertThat(tree.remove(8)).isFalse();
     }
+
+    @Test
+    void whenCleanNodeThenTreeUpdates() {
+        BinarySearchTree<Integer> tree = new BinarySearchTree<>();
+        for (int element : new int[]{4, 2, 6, 1, 3, 5, 7}) {
+            tree.put(element);
+        }
+        assertThat(tree.inSymmetricalOrder()).hasSize(7);
+        tree.clear();
+        assertThat(tree.contains(4)).isFalse();
+        assertThat(tree.inSymmetricalOrder()).isEmpty();
+    }
+
+    @Test
+    void whenCleanNodeThenReturnFalse() {
+        BinarySearchTree<Integer> tree = new BinarySearchTree<>();
+        tree.clear();
+        assertThat(tree.inSymmetricalOrder()).isEmpty();
+    }
 }
